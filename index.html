@@ -1,0 +1,3446 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#031110">
+  <title>untangle. — Clear your mind in minutes.</title>
+  <meta name="description" content="A Cobble-inspired field notebook to clear brain fog, unpack emotional noise, and find your rational next move in minutes. 100% on-device private.">
+
+  <!-- Favicon fallback -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
+
+  <!-- Google Fonts: Caveat (Signature Handwritten Logo), Instrument Serif (Display Refinements), Plus Jakarta Sans (UI & Headlines) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons via unpkg -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            tealDeep: '#031110',
+            tealDark: '#062927',
+            tealMid: '#0B4F4A',
+            tealVibrant: '#126E68',
+            butter: '#FFF5B8',
+            butterHover: '#FFF8CC',
+            beigeLight: '#F5E6D3',
+            beigeWarm: '#EED9C4',
+            beigeBorder: '#E6CCB2',
+            coralRed: '#F87171',
+            peachWarm: '#FDBA74',
+            roseGold: '#FDA4AF'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+            handwritten: ['"Caveat"', 'cursive']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    body {
+      background: 
+        radial-gradient(circle at 50% 18%, rgba(19, 133, 126, 0.45) 0%, transparent 60%),
+        linear-gradient(180deg, #031110 0%, #062927 38%, #0B4F4A 75%, #126E68 100%) fixed;
+      color: #FFFFFF;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* Ambient Cobble Glow */
+    .cobble-bg-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: radial-gradient(circle at 50% 0%, rgba(255, 245, 184, 0.12), transparent 70%);
+    }
+
+    /* Signature Handwritten Logo */
+    .untangle-handwritten-logo {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      transform: rotate(-2deg);
+      display: inline-block;
+      color: #FFF5B8;
+      text-shadow: 0 3px 10px rgba(3, 17, 16, 0.9);
+      letter-spacing: 0.02em;
+    }
+
+    /* Cobble Big Display Headline */
+    .cobble-hero-headline {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      -webkit-text-stroke: 2px #031110;
+      text-shadow: 0 6px 0 #031110, 0 14px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    /* High-Contrast Obsidian-Teal Glass Cards */
+    .glass-card {
+      background: rgba(4, 24, 22, 0.68);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(238, 217, 196, 0.22);
+      border-radius: 1.25rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.25s ease;
+    }
+
+    .glass-card-subtle {
+      background: rgba(3, 17, 16, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(238, 217, 196, 0.2);
+      border-radius: 1rem;
+    }
+
+    .glass-card-interactive:hover {
+      border-color: rgba(255, 245, 184, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Primary Baby Yellow Action Button */
+    .btn-butter {
+      background-color: #FFF5B8;
+      color: #031110;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      border-bottom: 3px solid #031110;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-butter:hover {
+      background-color: #FFF8CC;
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+    }
+    .btn-butter:active {
+      transform: translateY(2px) scale(0.98);
+      border-bottom-width: 1px;
+    }
+
+    /* Secondary Light Beige Pill Button */
+    .btn-beige {
+      background-color: rgba(238, 217, 196, 0.16);
+      color: #F5E6D3;
+      border: 1px solid #EED9C4;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .btn-beige:hover {
+      background-color: rgba(238, 217, 196, 0.28);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(3, 17, 16, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(238, 217, 196, 0.3); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(238, 217, 196, 0.5); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    #particleCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  
+    /* Cobble.video Scroll-Reveal Card System */
+    .cobble-scroll-card {
+      opacity: 0;
+      transform: translate3d(0, 22px, 0) scale(0.985);
+      transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+    .cobble-scroll-card.revealed {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    /* Fix Smartphone Choppiness & GPU Smoothness */
+    @media (max-width: 640px) {
+      body {
+        background-attachment: scroll !important;
+      }
+      .glass-card, .glass-card-subtle {
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+      }
+    }
+</style>
+</head>
+<body class="selection:bg-butter selection:text-tealDeep min-h-screen relative overflow-x-hidden">
+  
+  <div class="cobble-bg-glow"></div>
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- LEFT HISTORY VAULT DRAWER -->
+  <div id="historyDrawerBackdrop" onclick="window.app.toggleSidebar()" class="fixed inset-0 bg-black/70 backdrop-blur-md z-40 hidden transition-opacity"></div>
+  <aside id="historyDrawer" class="fixed top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-[#031614] border-r border-[#EED9C4]/20 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+    <div class="p-5 border-b border-[#EED9C4]/20 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="text-xl">🗄️</span>
+        <h3 class="font-serif text-lg text-beigeLight font-bold">Private Session Vault</h3>
+      </div>
+      <button onclick="window.app.toggleSidebar()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer">✕</button>
+    </div>
+    
+    <div class="p-4 flex-1 overflow-y-auto space-y-3" id="historyListContainer">
+      <div class="text-center py-12 text-xs text-white/50">
+        <p>No archived sessions yet.</p>
+        <p class="mt-1">Untangle your first thought to save it privately.</p>
+      </div>
+    </div>
+
+    <div class="p-4 border-t border-[#EED9C4]/20 space-y-2 bg-black/40">
+      <button onclick="window.app.startNewSessionFromSidebar()" class="w-full py-2.5 px-3 rounded-xl bg-butter text-tealDeep font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-butterHover transition cursor-pointer">
+        <span>+ New Thought Session</span>
+      </button>
+      <div class="flex items-center gap-2 pt-1">
+        <button onclick="window.app.exportVaultJSON()" class="flex-1 py-1.5 px-2 rounded-lg bg-white/10 hover:bg-white/15 text-white text-xs border border-white/15 transition">Export JSON</button>
+        <button onclick="window.app.clearHistory()" class="flex-1 py-1.5 px-2 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 text-xs border border-rose-500/30 transition">Clear Vault</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ======================================================== -->
+  <!-- 1. COBBLE.VIDEO COVER PAGE HERO & DOTTA ONBOARDING FLOW   -->
+  <!-- ======================================================== -->
+  <section id="coverPage" class="min-h-screen flex flex-col justify-between p-4 sm:p-6 md:p-8 relative z-20 animate-fadeIn">
+    
+    <!-- Cover Top Navigation Bar -->
+    <header class="max-w-5xl mx-auto w-full flex items-center justify-between gap-3 pt-2">
+      <div class="flex items-center gap-3">
+        
+        <span class="untangle-handwritten-logo text-3xl sm:text-4xl">untangle.</span>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button onclick="window.app.openTourModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full btn-beige text-xs sm:text-sm cursor-pointer">
+          <i data-lucide="sparkles" class="w-4 h-4 text-butter"></i>
+          <span>Tour / Guide</span>
+        </button>
+        
+        <button onclick="window.app.openWhyModal()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full btn-beige text-xs sm:text-sm cursor-pointer">
+          <i data-lucide="shield-check" class="w-4 h-4 text-butter"></i>
+          <span>100% Private</span>
+        </button>
+
+        <button onclick="window.app.startCoverFlow()" class="btn-butter px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer">
+          <span>Enter Untangle →</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Cover Hero Centerpiece (Cobble Style) -->
+    <div class="max-w-4xl mx-auto w-full py-12 sm:py-16 md:py-20 text-center space-y-6 sm:space-y-8 my-auto">
+      
+      <!-- Logo Mark -->
+      <div class="inline-block">
+        <span class="untangle-handwritten-logo text-5xl sm:text-6xl md:text-7xl">untangle.</span>
+      </div>
+
+      <!-- Cobble Big Display Headline -->
+      <h1 class="cobble-hero-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-beigeLight leading-[1.08] select-none">
+        Clear your mind<br>in minutes.
+      </h1>
+
+      <!-- Pure White Subtitle -->
+      <p class="text-white text-lg sm:text-xl md:text-2xl font-medium max-w-2xl mx-auto leading-relaxed opacity-95">
+        I turn your messy thoughts and brain fog into one clear next move.
+      </p>
+
+      <!-- Dotta-Style Enter Button & Trigger -->
+      <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <button onclick="window.app.startCoverFlow()" class="btn-butter px-8 sm:px-10 py-3.5 sm:py-4 rounded-full text-base sm:text-lg font-bold flex items-center justify-center gap-2.5 cursor-pointer shadow-2xl">
+          <span>Enter Untangle →</span>
+          <i data-lucide="arrow-right" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Quick Trust Indicators -->
+      <div class="pt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm font-medium text-white/80">
+        <span class="flex items-center gap-1.5">
+          <i data-lucide="lock" class="w-4 h-4 text-butter"></i> 100% On-Device & Encrypted
+        </span>
+        <span class="flex items-center gap-1.5">
+          <i data-lucide="zap" class="w-4 h-4 text-butter"></i> Zero Wait Time
+        </span>
+        <span class="flex items-center gap-1.5">
+          <i data-lucide="coffee" class="w-4 h-4 text-butter"></i> Free & Open Source
+        </span>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- SEQUENTIAL ONBOARDING: NAME & VIBE CONTAINER   -->
+      <!-- ============================================== -->
+      <div id="coverOnboardingContainer" class="hidden max-w-lg mx-auto text-left glass-card p-6 sm:p-7 space-y-5 animate-fadeIn border-butter/30 shadow-2xl mt-8">
+        <div class="border-b border-[#EED9C4]/20 pb-3 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">✨</span>
+            <h3 class="text-lg sm:text-xl font-bold text-beigeLight font-serif">Before we begin, what should we call you?</h3>
+          </div>
+          <button onclick="window.app.proceedToBriefing()" class="text-xs text-white/60 hover:text-white underline cursor-pointer">Skip</button>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-xs sm:text-sm font-bold text-white">Your Name / Handle</label>
+          <input id="coverNameInput" type="text" placeholder="Enter your name (e.g. Bhargav, Sam, Alex...)" class="w-full bg-black/40 border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/40 focus:outline-none focus:border-butter font-medium">
+        </div>
+
+        <!-- Role / Persona Pills -->
+        <div class="space-y-2">
+          <label class="text-xs sm:text-sm font-bold text-white">Your Current Role / Archetype</label>
+          <div class="grid grid-cols-2 gap-2 text-xs" id="coverRoleGrid">
+            <button type="button" onclick="window.app.selectCoverRole('🎸 Funky Guy')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium">
+              <span>🎸</span> <span>Funky Guy</span>
+            </button>
+            <button type="button" onclick="window.app.selectCoverRole('💻 Vibe Coder')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium bg-butter/20 border-butter text-butter">
+              <span>💻</span> <span>Vibe Coder</span>
+            </button>
+            <button type="button" onclick="window.app.selectCoverRole('🔥 Passionist')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium">
+              <span>🔥</span> <span>Passionist</span>
+            </button>
+            <button type="button" onclick="window.app.selectCoverRole('⚽ Athlete')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium">
+              <span>⚽</span> <span>Athlete</span>
+            </button>
+            <button type="button" onclick="window.app.selectCoverRole('🚀 Young Founder')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium">
+              <span>🚀</span> <span>Young Founder</span>
+            </button>
+            <button type="button" onclick="window.app.selectCoverRole('🎓 Student')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium">
+              <span>🎓</span> <span>Student</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mood Pills -->
+        <div class="space-y-2">
+          <label class="text-xs sm:text-sm font-bold text-white">Current Mindset / Mood</label>
+          <div class="flex flex-wrap gap-2 text-xs" id="coverMoodGrid">
+            <button type="button" onclick="window.app.selectCoverMood('💔 Devastated')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium">💔 Devastated</button>
+            <button type="button" onclick="window.app.selectCoverMood('🌪️ In a Problematic Situation')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium">🌪️ Problematic Situation</button>
+            <button type="button" onclick="window.app.selectCoverMood('😤 Pissed Off')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium">😤 Pissed Off</button>
+            <button type="button" onclick="window.app.selectCoverMood('🌫️ Brain Fogged')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium">🌫️ Brain Fogged</button>
+            <button type="button" onclick="window.app.selectCoverMood('⚡ Overwhelmed')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium bg-butter/20 border-butter text-butter">⚡ Overwhelmed</button>
+            <button type="button" onclick="window.app.selectCoverMood('😌 Just Venting')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium">😌 Just Venting</button>
+          </div>
+        </div>
+
+        <button onclick="window.app.proceedToBriefing()" class="w-full btn-butter py-3 rounded-xl text-sm font-bold cursor-pointer">
+          Continue to Feature Briefing →
+        </button>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- SEQUENTIAL ONBOARDING: 3-CARD BRIEFING         -->
+      <!-- ============================================== -->
+      <div id="coverBriefingCard" class="hidden max-w-2xl mx-auto text-left glass-card p-6 sm:p-7 space-y-5 animate-fadeIn border-butter/30 shadow-2xl mt-8">
+        <div class="border-b border-[#EED9C4]/20 pb-3 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🧭</span>
+            <h3 class="text-lg sm:text-xl font-bold text-beigeLight font-serif">How Untangle Works</h3>
+          </div>
+          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-butter text-tealDeep">3-Step Flow</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="p-3.5 rounded-xl bg-black/40 border border-white/15 space-y-1.5">
+            <span class="text-butter font-bold text-xs">01. DUMP & SOFTEN</span>
+            <h4 class="text-sm font-bold text-white">Vent Unfiltered</h4>
+            <p class="text-xs text-white/80 leading-relaxed">Speak or type freely. Real-time NLP softens harsh trap words and cognitive distortions instantly.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-black/40 border border-white/15 space-y-1.5">
+            <span class="text-butter font-bold text-xs">02. VISUAL CHARTS</span>
+            <h4 class="text-sm font-bold text-white">See Real Emotions</h4>
+            <p class="text-xs text-white/80 leading-relaxed">View live vertical emotion intensity bars and pop 3 overthinking loops into 50+ water droplets.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-black/40 border border-white/15 space-y-1.5">
+            <span class="text-butter font-bold text-xs">03. ACTION SPRINT</span>
+            <h4 class="text-sm font-bold text-white">Execute Clarity</h4>
+            <p class="text-xs text-white/80 leading-relaxed">Copy ready-to-send messages, athlete recovery playbooks, or run a 15-minute focus countdown timer.</p>
+          </div>
+        </div>
+
+        <button onclick="window.app.enterWorkspace()" class="w-full btn-butter py-3.5 rounded-xl text-base font-bold cursor-pointer flex items-center justify-center gap-2">
+          <span>Start Untangling Now →</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Cover Footer -->
+    <footer class="max-w-5xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/60 pb-2">
+      <div class="flex items-center gap-2">
+        <span class="untangle-handwritten-logo text-xl">untangle.</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span>No server • 100% Private</span>
+        <button onclick="window.app.enterWorkspace()" class="text-butter hover:underline font-semibold cursor-pointer">Open Workspace</button>
+      </div>
+    </footer>
+
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 2. MAIN APPLICATION WORKSPACE                            -->
+  <!-- ======================================================== -->
+  <div id="mainWorkspace" class="hidden">
+    
+    <!-- TOP HEADER NAVIGATION (MAIN WORKSPACE) -->
+    <header class="sticky top-0 z-30 bg-[#031614]/85 backdrop-blur-md border-b border-[#EED9C4]/20">
+      <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+        
+        <!-- Left: Drawer Toggle & Handwritten Logo -->
+        <div class="flex items-center gap-3">
+          <button onclick="window.app.toggleSidebar()" title="Session History Vault" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition cursor-pointer">
+            <i data-lucide="menu" class="w-4 h-4"></i>
+          </button>
+          
+          <div class="flex items-center gap-2 cursor-pointer" onclick="window.app.showCoverPage()">
+            
+            <span class="untangle-handwritten-logo text-2xl sm:text-3xl">untangle.</span>
+          </div>
+        </div>
+
+        <!-- Center: Step Indicator Pills -->
+        <nav class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border border-white/15 text-xs">
+          <button onclick="window.app.handleStepNav(1)" id="stepNav1" class="px-3 py-1 rounded-full font-bold text-tealDeep bg-butter transition cursor-pointer">1. Vent</button>
+          <span class="text-white/40">•</span>
+          <button onclick="window.app.handleStepNav(2)" id="stepNav2" class="px-3 py-1 rounded-full font-medium text-white/80 hover:text-white transition cursor-pointer">2. Untangle</button>
+          <span class="text-white/40">•</span>
+          <button onclick="window.app.handleStepNav(3)" id="stepNav3" class="px-3 py-1 rounded-full font-medium text-white/80 hover:text-white transition cursor-pointer">3. Clarity</button>
+        </nav>
+
+        <!-- Right: Utility Actions (Warm Light Beige & Baby Yellow!) -->
+        <div class="flex items-center gap-2">
+          <button onclick="window.app.showCoverPage()" class="hidden md:flex items-center gap-1 px-3 py-1 rounded-full btn-beige text-xs font-semibold cursor-pointer">
+            <i data-lucide="home" class="w-3.5 h-3.5 text-butter"></i>
+            <span>Cover</span>
+          </button>
+
+          <button onclick="window.app.openTourModal()" class="hidden sm:flex items-center gap-1 px-3 py-1 rounded-full btn-beige text-xs font-semibold cursor-pointer">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-butter"></i>
+            <span>Guide</span>
+          </button>
+          
+          <button onclick="window.app.openWhyModal()" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EED9C4]/15 border border-[#EED9C4] text-[#F5E6D3] text-xs font-semibold hover:bg-[#EED9C4]/25 transition cursor-pointer">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-butter"></i>
+            <span>100% Private</span>
+          </button>
+
+          <button onclick="window.app.openProfileModal()" title="Customize Profile & Mood" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition cursor-pointer">
+            <i data-lucide="more-vertical" class="w-4 h-4 text-butter"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MOBILE STEP SWITCHER BAR (Visible on mobile < 640px) -->
+    <div class="sm:hidden sticky top-16 z-20 bg-[#031614]/90 backdrop-blur-md border-b border-[#EED9C4]/15 px-3 py-2 flex items-center justify-around text-xs font-semibold">
+      <button onclick="window.app.goToScreen(1)" id="mobStepNav1" class="px-2.5 py-1 rounded-full font-semibold transition cursor-pointer text-tealDeep bg-butter">1. Vent</button>
+      <span class="text-white/30">•</span>
+      <button onclick="window.app.goToScreen(2)" id="mobStepNav2" class="px-2.5 py-1 rounded-full font-medium text-white/80 transition cursor-pointer">2. Untangle</button>
+      <span class="text-white/30">•</span>
+      <button onclick="window.app.goToScreen(3)" id="mobStepNav3" class="px-2.5 py-1 rounded-full font-medium text-white/80 transition cursor-pointer">3. Clarity</button>
+    </div>
+
+    <!-- MAIN WORKSPACE CONTENT CONTAINER -->
+    <main class="max-w-3xl mx-auto px-3.5 sm:px-4 py-4 sm:py-8 space-y-5 sm:space-y-6 relative z-10">
+
+      <!-- ========================================== -->
+      <!-- SCREEN 1: VENT & THOUGHT STREAM            -->
+      <!-- ========================================== -->
+      <section id="screen1" class="space-y-6 animate-fadeIn">
+        
+        <!-- HERO HEADLINE & BRAND GREETING -->
+        <div class="space-y-2 text-left pt-1">
+          <div class="flex items-baseline gap-3">
+            <span class="untangle-handwritten-logo text-4xl sm:text-5xl">untangle.</span>
+            <span class="text-xl sm:text-2xl md:text-3xl font-handwritten text-[#FFF5B8] font-bold tracking-wide drop-shadow-md">a calmer headspace in minutes</span>
+          </div>
+          <p id="heroPersonalGreeting" class="text-base sm:text-lg text-white font-medium leading-relaxed font-sans">
+            What's weighing on your mind right now?
+          </p>
+          
+          <!-- Profile & Mood Pill Display (Warm Light Beige & Baby Yellow!) -->
+          <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+            <button onclick="window.app.openProfileModal()" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#EED9C4]/15 border border-[#EED9C4] text-[#F5E6D3] hover:bg-[#EED9C4]/25 transition cursor-pointer">
+              <span id="heroRoleBadge" class="font-bold">💻 Vibe Coder</span>
+              <span class="text-white/40">•</span>
+              <span id="heroMoodBadge" class="font-medium">⚡ Overwhelmed</span>
+              <span class="text-butter font-handwritten text-xs ml-1">• tap to change</span>
+            </button>
+            <span class="hidden sm:inline-flex items-center gap-1.5 text-xs text-[#F5E6D3] bg-[#EED9C4]/10 px-3 py-1 rounded-full border border-[#EED9C4]/30 font-medium">
+              <i data-lucide="lock" class="w-3.5 h-3.5 text-butter"></i> 100% On-Device & Encrypted
+            </span>
+          </div>
+        </div>
+
+        <!-- MAIN INPUT GLASS CARD -->
+        <div class="glass-card p-4 sm:p-5 md:p-6 space-y-4 shadow-2xl">
+          <div class="flex items-center justify-between text-xs sm:text-sm text-white/90 border-b border-[#EED9C4]/20 pb-3">
+            <span class="font-bold tracking-wider flex items-center gap-2 text-beigeLight">
+              <i data-lucide="feather" class="w-4 h-4 text-butter"></i> YOUR RAW STREAM OF THOUGHT
+            </span>
+            <button onclick="window.app.showContextHelp('rawThought')" class="text-butter hover:underline flex items-center gap-1.5 font-medium cursor-pointer">
+              <i data-lucide="help-circle" class="w-4 h-4"></i> How this helps
+            </button>
+          </div>
+
+          <!-- Textarea -->
+          <div class="relative">
+            <textarea id="thoughtInput" rows="4" oninput="window.app.handleInput()" placeholder="Type whatever is bothering you... e.g. I just had an argument and my chest is tight, or my demo crashed in front of investors, or I lost our match and can't stop replaying that final mistake..." class="w-full bg-black/45 border border-white/20 focus:border-butter rounded-2xl p-4 sm:p-5 text-sm sm:text-base text-white placeholder-white/40 focus:outline-none transition leading-relaxed resize-y font-medium"></textarea>
+          </div>
+
+          <!-- Immediate Action Bar (Mic with 0ms streaming, Pure White Count, Big Baby Yellow Button) -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
+            <div class="flex items-center gap-3">
+              <button id="micBtn" onclick="window.app.toggleRealMicrophone()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-bold text-white transition cursor-pointer">
+                <i data-lucide="mic" class="w-4 h-4 text-butter" id="micIcon"></i>
+                <span id="micText">Speak Freely</span>
+              </button>
+              <div class="flex items-center gap-2 text-xs sm:text-sm">
+                <span id="wordCount" class="font-bold text-white">0 words</span>
+                <span class="text-white/40">•</span>
+                <span id="ventingStateBadge" class="text-butter font-semibold">Ready</span>
+              </div>
+            </div>
+
+            <!-- Big High-Contrast Baby Yellow Button -->
+            <button id="untangleBtn" onclick="window.app.startUntangle()" class="btn-butter px-7 py-3 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer shadow-xl">
+              <span>Untangle This Thought</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- LIVE EXTREME & HARSH WORD SOFTENER TRAY -->
+        <div id="liveTrapWordTray" class="glass-card-subtle p-4 space-y-2.5 hidden">
+          <div class="flex items-center justify-between text-xs sm:text-sm">
+            <div class="flex items-center gap-2 text-butter font-bold">
+              <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+              <span>Live Extreme & Harsh Word Softener</span>
+              <span id="trapWordCountBadge" class="px-2.5 py-0.5 rounded-full bg-butter text-tealDeep text-xs font-bold">0</span>
+            </div>
+            <span class="text-xs text-beigeLight font-handwritten text-sm">Click any chip to soften in your text</span>
+          </div>
+          <div id="trapWordChipsContainer" class="flex flex-wrap gap-2 pt-1">
+            <!-- Dynamically populated with interactive chips -->
+          </div>
+        </div>
+
+        <!-- RESTORED 6 CLICKABLE PRESET DILEMMA CARDS (From Image 2) -->
+        <div class="space-y-3 pt-2">
+          <div class="flex items-center gap-2 text-sm font-bold text-butter">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>Try a realistic dilemma (Click to preview how Untangle works):</span>
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <!-- Card 1: Relationship & Hurt -->
+            <div onclick="window.app.loadDilemmaPreset(0)" class="glass-card-subtle p-4 hover:border-butter hover:bg-black/50 transition cursor-pointer group space-y-1.5 text-left">
+              <div class="flex items-center justify-between">
+                <span class="text-xs sm:text-sm font-bold text-rose-300 flex items-center gap-1.5">💔 Relationship & Hurt</span>
+                <span class="text-xs text-white/50 group-hover:text-butter transition">→</span>
+              </div>
+              <p class="text-xs text-white/85 line-clamp-2 leading-relaxed font-medium">
+                "Mixed feelings after an argument: they never listen and this always happens..."
+              </p>
+            </div>
+
+            <!-- Card 2: Lost a Big Match -->
+            <div onclick="window.app.loadDilemmaPreset(1)" class="glass-card-subtle p-4 hover:border-butter hover:bg-black/50 transition cursor-pointer group space-y-1.5 text-left">
+              <div class="flex items-center justify-between">
+                <span class="text-xs sm:text-sm font-bold text-amber-300 flex items-center gap-1.5">⚽ Lost a Big Match</span>
+                <span class="text-xs text-white/50 group-hover:text-butter transition">→</span>
+              </div>
+              <p class="text-xs text-white/85 line-clamp-2 leading-relaxed font-medium">
+                "Lost the finals after training for months, team is devastated, replaying every mistake..."
+              </p>
+            </div>
+
+            <!-- Card 3: Brain Fog & Burnout -->
+            <div onclick="window.app.loadDilemmaPreset(2)" class="glass-card-subtle p-4 hover:border-butter hover:bg-black/50 transition cursor-pointer group space-y-1.5 text-left">
+              <div class="flex items-center justify-between">
+                <span class="text-xs sm:text-sm font-bold text-beigeLight flex items-center gap-1.5">🌫️ Brain Fog & Burnout</span>
+                <span class="text-xs text-white/50 group-hover:text-butter transition">→</span>
+              </div>
+              <p class="text-xs text-white/85 line-clamp-2 leading-relaxed font-medium">
+                "Tasks piling up, feeling impossible to finish, failing everyone, dimaag kharab..."
+              </p>
+            </div>
+
+            <!-- Card 4: Startup / Project Setback -->
+            <div onclick="window.app.loadDilemmaPreset(3)" class="glass-card-subtle p-4 hover:border-butter hover:bg-black/50 transition cursor-pointer group space-y-1.5 text-left">
+              <div class="flex items-center justify-between">
+                <span class="text-xs sm:text-sm font-bold text-orange-300 flex items-center gap-1.5">📉 Startup Setback</span>
+                <span class="text-xs text-white/50 group-hover:text-butter transition">→</span>
+              </div>
+              <p class="text-xs text-white/85 line-clamp-2 leading-relaxed font-medium">
+                "Client churned and demo crashed right before pitch, questioning if I should quit..."
+              </p>
+            </div>
+
+            <!-- Card 5: Crossroads Paralysis -->
+            <div onclick="window.app.loadDilemmaPreset(4)" class="glass-card-subtle p-4 hover:border-butter hover:bg-black/50 transition cursor-pointer group space-y-1.5 text-left">
+              <div class="flex items-center justify-between">
+                <span class="text-xs sm:text-sm font-bold text-purple-300 flex items-center gap-1.5">⚖️ Crossroads Paralysis</span>
+                <span class="text-xs text-white/50 group-hover:text-butter transition">→</span>
+              </div>
+              <p class="text-xs text-white/85 line-clamp-2 leading-relaxed font-medium">
+                "Paralyzed between two paths, terrified of making the worst choice and regretting forever..."
+              </p>
+            </div>
+
+            <!-- Card 6: 2 AM Overthinking Spiral -->
+            <div onclick="window.app.loadDilemmaPreset(5)" class="glass-card-subtle p-4 hover:border-butter hover:bg-black/50 transition cursor-pointer group space-y-1.5 text-left">
+              <div class="flex items-center justify-between">
+                <span class="text-xs sm:text-sm font-bold text-rose-300 flex items-center gap-1.5">🌪️ 2 AM Spiral</span>
+                <span class="text-xs text-white/50 group-hover:text-butter transition">→</span>
+              </div>
+              <p class="text-xs text-white/85 line-clamp-2 leading-relaxed font-medium">
+                "Looming deadline, feeling like an impostor, convinced I will completely fail..."
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 2: UNTANGLE & DECONSTRUCT           -->
+      <!-- ========================================== -->
+      <section id="screen2" class="hidden space-y-6 animate-fadeIn">
+        
+        <!-- Top Bar: Back & Step Context -->
+        <div class="flex items-center justify-between pb-1">
+          <button onclick="window.app.goToScreen(1)" class="text-xs sm:text-sm font-semibold text-white/90 hover:text-butter flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition cursor-pointer">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Back to Edit</span>
+          </button>
+          <div class="flex items-center gap-2">
+            <span id="conditionTag" class="text-xs sm:text-sm px-3.5 py-1 rounded-full font-bold bg-[#EED9C4]/15 text-[#F5E6D3] border border-[#EED9C4]">
+              Condition: Attachment & Relationship Friction
+            </span>
+            <span class="text-xs sm:text-sm font-bold text-white/70">Step 2 of 3</span>
+          </div>
+        </div>
+
+        <div class="space-y-1 text-left">
+          <h2 class="text-2xl sm:text-3xl font-serif text-white">Let's look at what's <em class="italic text-butter">really</em> happening.</h2>
+          <p class="text-sm sm:text-base text-white/90 font-medium font-sans">Separating biological fatigue and cognitive saturation from objective reality.</p>
+        </div>
+
+        <div class="space-y-4">
+          
+          <!-- CARD 1: What You're Actually Feeling (VERTICAL COLUMN BAR CHART!) -->
+          <div class="glass-card p-4 sm:p-5 md:p-6 space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <i data-lucide="compass" class="w-5 h-5 text-butter"></i>
+                <h3 class="text-lg sm:text-xl font-bold text-white">What You're Actually Feeling</h3>
+              </div>
+              <span id="emotionDominantBadge" class="text-xs sm:text-sm font-bold px-3 py-1 rounded-full bg-[#EED9C4]/20 text-[#F5E6D3] border border-[#EED9C4]">
+                Relational Hurt & Heat
+              </span>
+            </div>
+
+            <!-- VERTICAL COLUMN BAR CHART CONTAINER -->
+            <div class="p-4 sm:p-6 rounded-2xl bg-black/45 border border-white/15 backdrop-blur-md">
+              <div class="text-xs sm:text-sm text-white font-bold mb-3 flex items-center justify-between border-b border-white/10 pb-2">
+                <span class="tracking-wider">EMOTIONAL LOAD INTENSITY</span>
+                <span class="text-white font-semibold text-sm">Live Emotion Breakdown</span>
+              </div>
+              
+              <!-- Rising Vertical Bars Container (NO TRUNCATION!) -->
+              <div class="flex items-end justify-between sm:justify-around gap-2 sm:gap-6 h-52 sm:h-60 pt-6 pb-2 px-1" id="dynamicEmotionBars">
+                <!-- Populated dynamically with 4 wide vertical columns -->
+              </div>
+            </div>
+
+            <!-- Concise Analytical Insight Box -->
+            <div class="p-4 bg-black/40 rounded-xl border border-white/15 text-sm sm:text-base text-white leading-relaxed font-medium" id="dynamicInsightBox">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- CARD 2: The Grounding Truth -->
+          <div class="glass-card p-4 sm:p-5 md:p-6 space-y-3.5">
+            <div class="flex items-center gap-2">
+              <i data-lucide="anchor" class="w-5 h-5 text-butter"></i>
+              <h3 class="text-lg sm:text-xl font-bold text-white">The Grounding Truth</h3>
+            </div>
+            
+            <div class="space-y-2.5" id="dynamicGroundingFacts">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+
+          <!-- CARD 3: Pop the Overthinking Nodes -->
+          <div id="overthinkingLoopsCard" class="glass-card p-4 sm:p-5 md:p-6 space-y-3.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-5 h-5 text-butter"></i>
+                <h3 class="text-lg sm:text-xl font-bold text-white">Pop the Overthinking Nodes</h3>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="window.app.popAllThoughtBubbles()" class="text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition cursor-pointer">
+                  Dissolve All (3)
+                </button>
+                <span id="headspaceCounter" class="text-xs sm:text-sm px-3 py-1 rounded-full font-bold bg-[#EED9C4]/20 text-[#F5E6D3] border border-[#EED9C4] font-sans">
+                  Cleared: 0 / 3
+                </span>
+              </div>
+            </div>
+            
+            <p class="text-xs sm:text-sm text-white/85 font-medium">Tap each irrational thought loop to strike it out and free up working memory:</p>
+
+            <!-- The 3 Interactive Thought Loops -->
+            <div class="space-y-2.5" id="thoughtLoopsContainer">
+              <!-- Populated via JS -->
+            </div>
+
+            <!-- All Cleared Celebration Box (Hidden by default) -->
+            <div id="clearedCelebrationBanner" class="p-4 rounded-xl bg-gradient-to-r from-butter/20 via-black/40 to-peachWarm/20 border border-butter/40 text-center space-y-1.5 hidden animate-fadeIn">
+              <p class="text-base font-bold text-butter flex items-center justify-center gap-2">
+                <span>✨</span> Mental RAM Cleared! All 3 Loops Disarmed.
+              </p>
+              <p class="text-xs sm:text-sm text-white/90 font-medium">Your cognitive working memory is quieted. Proceed to clarity below.</p>
+              <button onclick="window.app.resetOverthinkingBubbles()" class="text-xs text-butter underline pt-1 cursor-pointer font-bold">
+                Review loops again
+              </button>
+            </div>
+
+            <!-- Full-Screen Arena Launch Banner (Auto-hidden when 3/3 popped!) -->
+            <div id="arenaLaunchBanner" class="p-3.5 bg-black/40 rounded-xl border border-white/15 flex items-center justify-between gap-3 text-xs sm:text-sm">
+              <div class="flex items-center gap-2 text-white font-medium">
+                <span class="text-lg">🫧</span>
+                <span>Need sensory decompression? Try our physics arena.</span>
+              </div>
+              <button onclick="window.app.openFloatingArena()" class="btn-butter px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold cursor-pointer whitespace-nowrap">
+                Launch Arena
+              </button>
+            </div>
+          </div>
+
+          <!-- CARD 4: Situational In Your Control vs. Let It Go Sorter (FIXED CONTRAST & COLORS!) -->
+          <div class="glass-card p-4 sm:p-5 md:p-6 space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <i data-lucide="split" class="w-5 h-5 text-butter"></i>
+                <h3 class="text-lg sm:text-xl font-bold text-white">In Your Control vs. Let It Go</h3>
+              </div>
+              <button onclick="window.app.showContextHelp('controlSorter')" class="text-xs sm:text-sm text-butter hover:underline flex items-center gap-1 font-semibold cursor-pointer">
+                <i data-lucide="help-circle" class="w-4 h-4"></i> How this helps
+              </button>
+            </div>
+            
+            <p class="text-xs sm:text-sm text-white/90 font-medium leading-relaxed">80% of mental exhaustion comes from trying to fix what cannot be influenced right now:</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Left: In My Control (Warm Light Beige & Crisp Dark Tint!) -->
+              <div class="p-4 rounded-xl bg-[#031614]/85 border border-[#E6CCB2] space-y-3 shadow-lg">
+                <div class="flex items-center justify-between border-b border-[#E6CCB2]/30 pb-2">
+                  <span class="text-sm sm:text-base font-bold text-[#F5E6D3] flex items-center gap-2">
+                    <span class="text-butter text-base">✓</span> IN MY CONTROL — ACT ON THIS
+                  </span>
+                  <span class="text-xs font-bold text-[#F5E6D3] bg-[#EED9C4]/20 border border-[#EED9C4] px-2.5 py-0.5 rounded-full" id="controlCount">4 items</span>
+                </div>
+                <div class="space-y-2" id="inControlList">
+                  <!-- Dynamically filled -->
+                </div>
+              </div>
+
+              <!-- Right: Let It Go (Warm Coral-Red on Dark Crimson!) -->
+              <div class="p-4 rounded-xl bg-[#2D0C10]/85 border border-[#F87171] space-y-3 shadow-lg">
+                <div class="flex items-center justify-between border-b border-[#F87171]/40 pb-2">
+                  <span class="text-sm sm:text-base font-bold text-[#F87171] flex items-center gap-2">
+                    <span class="text-rose-400 text-base">✕</span> LET IT GO — DROP THIS WEIGHT
+                  </span>
+                  <span class="text-xs font-bold text-[#FFB4B4] bg-rose-500/25 border border-rose-500/40 px-2.5 py-0.5 rounded-full" id="letGoCount">4 items</span>
+                </div>
+                <div class="space-y-2" id="letGoList">
+                  <!-- Dynamically filled -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- BOTTOM NEXT STEP CTA -->
+        <div class="pt-2">
+          <button onclick="window.app.goToScreen(3)" class="w-full btn-butter py-3.5 px-4 rounded-xl font-bold text-base sm:text-lg flex items-center justify-center gap-2.5 cursor-pointer shadow-2xl">
+            <span>Step 3: Get Your Headspace Reset & Plan</span>
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 3: CLARITY & SITUATIONAL ACTIONS    -->
+      <!-- ========================================== -->
+      <section id="screen3" class="hidden space-y-6 animate-fadeIn">
+        
+        <!-- Top Bar: Back & Step Context -->
+        <div class="flex items-center justify-between pb-1">
+          <button onclick="window.app.goToScreen(2)" class="text-xs sm:text-sm font-semibold text-white/90 hover:text-butter flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition cursor-pointer">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Back to Deconstruct</span>
+          </button>
+          <span class="text-xs sm:text-sm font-bold text-white/70">Step 3 of 3</span>
+        </div>
+
+        <div class="space-y-1 text-left">
+          <h2 class="text-2xl sm:text-3xl font-serif text-white">Your headspace is reset. <em class="italic text-butter">Here is your plan.</em></h2>
+          <p class="text-sm sm:text-base text-white/90 font-medium font-sans">Ready-to-use communication scripts, focused timers, and grounded reframes.</p>
+        </div>
+
+        <!-- DYNAMIC ACTION TOOLKIT CONTAINER (High-EQ Situational Engine + Top Coin Flip!) -->
+        <div id="dynamicActionToolkitContainer">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- CARD 2: Grounding Operating Mindset Reframe -->
+        <div class="glass-card p-4 sm:p-5 md:p-6 space-y-3.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-lucide="bookmark" class="w-5 h-5 text-butter"></i>
+              <h3 class="text-lg sm:text-xl font-bold text-white">Operating Mindset Anchor</h3>
+            </div>
+            <button onclick="window.app.copyPersonalReframe()" class="text-xs sm:text-sm text-butter hover:underline flex items-center gap-1 font-bold cursor-pointer">
+              <i data-lucide="copy" class="w-4 h-4"></i> Copy Anchor
+            </button>
+          </div>
+          
+          <div id="personalReframeText" class="p-4 bg-black/40 rounded-xl border border-white/15 text-sm sm:text-base text-white leading-relaxed font-medium">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+        <!-- CARD 3: 4-Grid Somatic Reset Activities -->
+        <div class="glass-card p-4 sm:p-5 md:p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-lucide="activity" class="w-5 h-5 text-butter"></i>
+              <h3 class="text-lg sm:text-xl font-bold text-white">Biological & Somatic Reset</h3>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-white/70">Choose 1 before acting</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="somaticResetGrid">
+            <div onclick="window.app.showToast('Cold water activates the mammalian dive reflex to drop heart rate.')" class="p-3.5 rounded-xl bg-black/40 hover:bg-black/60 border border-white/15 transition cursor-pointer text-left space-y-1.5 group">
+              <span class="text-2xl">🧊</span>
+              <p class="text-xs sm:text-sm font-bold text-white group-hover:text-butter transition">Cold Face Plunge</p>
+              <p class="text-[11px] text-white/70">Instant vagal nerve brake</p>
+            </div>
+
+            <div onclick="window.app.showToast('Optic flow from moving forward reduces amygdala threat firing.')" class="p-3.5 rounded-xl bg-black/40 hover:bg-black/60 border border-white/15 transition cursor-pointer text-left space-y-1.5 group">
+              <span class="text-2xl">🚶</span>
+              <p class="text-xs sm:text-sm font-bold text-white group-hover:text-butter transition">Brisk 5-Min Walk</p>
+              <p class="text-[11px] text-white/70">Bilateral optic stimulation</p>
+            </div>
+
+            <div onclick="window.app.openBreathingSanctuary()" class="p-3.5 rounded-xl bg-[#EED9C4]/15 hover:bg-[#EED9C4]/25 border border-[#EED9C4] transition cursor-pointer text-left space-y-1.5 group">
+              <span class="text-2xl">🫁</span>
+              <p class="text-xs sm:text-sm font-bold text-beigeLight group-hover:text-butter transition">4-7-8 Breathing</p>
+              <p class="text-[11px] text-white/70">Launch full sanctuary</p>
+            </div>
+
+            <div onclick="window.app.showToast('Dehydration mimics acute panic; 300ml water restores cellular volume.')" class="p-3.5 rounded-xl bg-black/40 hover:bg-black/60 border border-white/15 transition cursor-pointer text-left space-y-1.5 group">
+              <span class="text-2xl">💧</span>
+              <p class="text-xs sm:text-sm font-bold text-white group-hover:text-butter transition">Hydrate & Stretch</p>
+              <p class="text-[11px] text-white/70">300ml water + neck release</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: Context-Smart Time Horizon Perspective -->
+        <div class="glass-card p-4 sm:p-5 md:p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-lucide="clock" class="w-5 h-5 text-butter"></i>
+              <h3 class="text-lg sm:text-xl font-bold text-white">Time Horizon Perspective</h3>
+            </div>
+            <button onclick="window.app.showContextHelp('timeHorizon')" class="text-xs sm:text-sm text-butter hover:underline flex items-center gap-1 font-semibold cursor-pointer">
+              <i data-lucide="help-circle" class="w-4 h-4"></i> How this helps
+            </button>
+          </div>
+
+          <p class="text-xs sm:text-sm text-white/90 font-medium leading-relaxed">Toggle your perspective to calibrate the genuine long-term gravity of this situation:</p>
+
+          <div class="grid grid-cols-3 gap-2 p-1.5 bg-black/40 rounded-xl border border-white/15 text-xs sm:text-sm">
+            <button onclick="window.app.setTimePerspective('tomorrow')" id="hBtnTomorrow" class="py-2.5 px-3 rounded-lg font-bold bg-butter text-tealDeep transition cursor-pointer">
+              Tomorrow (80% Focus)
+            </button>
+            <button onclick="window.app.setTimePerspective('nextMonth')" id="hBtnNextMonth" class="py-2.5 px-3 rounded-lg font-medium text-white/80 hover:text-white transition cursor-pointer">
+              Next Month (20% Impact)
+            </button>
+            <button onclick="window.app.setTimePerspective('nextYear')" id="hBtnNextYear" class="py-2.5 px-3 rounded-lg font-medium text-white/80 hover:text-white transition cursor-pointer">
+              Next Year (5% Impact)
+            </button>
+          </div>
+
+          <div class="space-y-1.5 pt-1">
+            <div class="flex justify-between text-xs sm:text-sm text-white/90 font-sans font-medium">
+              <span id="perspectiveGravityLabel">Immediate Reality Focus</span>
+              <span id="perspectiveGravityPct" class="text-butter font-bold">80%</span>
+            </div>
+            <div class="w-full bg-black/40 h-2.5 rounded-full overflow-hidden border border-white/15">
+              <div id="perspectiveProgressBar" class="h-full bg-gradient-to-r from-butter to-peachWarm transition-all duration-500 rounded-full" style="width: 80%;"></div>
+            </div>
+          </div>
+
+          <p id="perspectiveText" class="text-xs sm:text-sm md:text-base text-white bg-black/40 p-4 rounded-xl border border-white/15 leading-relaxed font-sans font-medium">
+            <!-- Injected dynamically -->
+          </p>
+        </div>
+
+        <!-- CARD 5: Full-Screen Guided Breathing Sanctuary Banner -->
+        <div class="glass-card p-4 sm:p-5 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-gradient-to-r from-black/50 via-[#EED9C4]/10 to-black/50 border-[#EED9C4]/30">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">🪷</span>
+              <h4 class="text-base sm:text-lg font-bold text-white">Full-Screen Breathing Sanctuary</h4>
+            </div>
+            <p class="text-xs sm:text-sm text-white/85 font-medium">A 30-second immersive guided box breathing ritual with soothing lotus visual cues.</p>
+          </div>
+          <button onclick="window.app.openBreathingSanctuary()" class="btn-butter px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+            <span>Enter Sanctuary</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- BOTTOM ACTION: SAVE TO VAULT & START FRESH -->
+        <div class="pt-2 flex flex-col sm:flex-row gap-3">
+          <button onclick="window.app.saveAndReset()" class="flex-1 btn-butter py-3.5 px-4 rounded-xl font-bold text-base sm:text-lg flex items-center justify-center gap-2 cursor-pointer shadow-2xl">
+            <i data-lucide="bookmark-check" class="w-5 h-5"></i>
+            <span>Save to Private Vault & Start Fresh</span>
+          </button>
+          <button onclick="window.app.openCoinFlipModal()" class="sm:w-auto px-5 py-3.5 rounded-xl bg-[#EED9C4]/15 hover:bg-[#EED9C4]/25 border border-[#EED9C4] text-sm font-bold text-[#F5E6D3] flex items-center justify-center gap-2 transition cursor-pointer">
+            <span>🪙 Coin Flip Gut-Check</span>
+          </button>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: PROFILE & MOOD CUSTOMIZER (⋮ MENU)  -->
+  <!-- ========================================== -->
+  <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden animate-fadeIn">
+    <div class="glass-card max-w-md w-full p-5 sm:p-6 space-y-4 shadow-2xl border-butter/30 bg-[#031614]/95 text-left">
+      <div class="flex items-center justify-between border-b border-[#EED9C4]/20 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">⚙️</span>
+          <h3 class="font-serif text-lg text-beigeLight font-bold">Profile & Mood Setup</h3>
+        </div>
+        <button onclick="window.app.closeProfileModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer">✕</button>
+      </div>
+
+      <!-- Name Input -->
+      <div class="space-y-1.5">
+        <label class="text-xs sm:text-sm font-bold text-white">Your Name (shown in greetings)</label>
+        <input id="profileNameInput" type="text" placeholder="e.g. Bhargav, Sam, Alex..." class="w-full bg-black/40 border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/40 focus:outline-none focus:border-butter font-medium">
+      </div>
+
+      <!-- Role / Archetype Selection -->
+      <div class="space-y-2">
+        <label class="text-xs sm:text-sm font-bold text-white">Your Role / Archetype</label>
+        <div class="grid grid-cols-2 gap-2 text-xs" id="profilePersonaGrid">
+          <button type="button" onclick="window.app.selectPersona('🎸 Funky Guy')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium">
+            <span>🎸</span> <span>Funky Guy</span>
+          </button>
+          <button type="button" onclick="window.app.selectPersona('💻 Vibe Coder')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium">
+            <span>💻</span> <span>Vibe Coder</span>
+          </button>
+          <button type="button" onclick="window.app.selectPersona('🔥 Passionist')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium">
+            <span>🔥</span> <span>Passionist</span>
+          </button>
+          <button type="button" onclick="window.app.selectPersona('🎨 Creative Artist')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium">
+            <span>🎨</span> <span>Creative Artist</span>
+          </button>
+          <button type="button" onclick="window.app.selectPersona('🚀 Young Founder')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium">
+            <span>🚀</span> <span>Young Founder</span>
+          </button>
+          <button type="button" onclick="window.app.selectPersona('⚽ Athlete')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium">
+            <span>⚽</span> <span>Athlete</span>
+          </button>
+          <button type="button" onclick="window.app.selectPersona('🎓 Student')" class="p-2.5 rounded-xl border border-white/20 hover:border-butter text-left transition cursor-pointer flex items-center gap-2 font-medium col-span-2">
+            <span>🎓</span> <span>Student / Academic</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Current Mood Selection -->
+      <div class="space-y-2">
+        <label class="text-xs sm:text-sm font-bold text-white">Current Mindset / Mood</label>
+        <div class="flex flex-wrap gap-2 text-xs" id="profileMoodChips">
+          <button type="button" onclick="window.app.selectMood('💔 Devastated')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium">💔 Devastated</button>
+          <button type="button" onclick="window.app.selectMood('🌪️ In a Problematic Situation')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium">🌪️ Problematic Situation</button>
+          <button type="button" onclick="window.app.selectMood('😤 Pissed Off')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium">😤 Pissed Off</button>
+          <button type="button" onclick="window.app.selectMood('🌫️ Brain Fogged')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium">🌫️ Brain Fogged</button>
+          <button type="button" onclick="window.app.selectMood('⚡ Overwhelmed')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium">⚡ Overwhelmed</button>
+          <button type="button" onclick="window.app.selectMood('😌 Just Venting')" class="px-3 py-1.5 rounded-xl border border-white/20 hover:border-butter transition cursor-pointer font-medium">😌 Just Venting</button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="pt-3 border-t border-[#EED9C4]/20 flex items-center justify-between gap-3">
+        <button onclick="window.app.resetProfileToDefault()" class="text-xs text-white/60 hover:text-rose-300 transition cursor-pointer font-medium">Reset</button>
+        <button onclick="window.app.saveProfile()" class="btn-butter px-5 py-2 rounded-xl text-xs sm:text-sm font-bold cursor-pointer">
+          Save Profile & Apply
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: FULL-SCREEN SOAP BUBBLE ARENA       -->
+  <!-- ========================================== -->
+  <div id="floatingArenaModal" class="fixed inset-0 z-50 bg-[#031110]/95 backdrop-blur-xl hidden flex flex-col animate-fadeIn select-none">
+    <div class="p-4 sm:p-5 flex items-center justify-between border-b border-[#EED9C4]/20">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">🫧</span>
+        <div>
+          <h3 class="font-serif text-lg sm:text-xl text-beigeLight font-bold">Decompression Soap Bubble Arena</h3>
+          <p class="text-xs sm:text-sm text-white/80">Click or tap floating thought bubbles to pop them into 50+ water droplets.</p>
+        </div>
+      </div>
+      <button onclick="window.app.closeFloatingArena()" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer">✕</button>
+    </div>
+    
+    <div class="flex-1 relative overflow-hidden" id="arenaCanvasContainer">
+      <canvas id="arenaCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+    </div>
+
+    <div class="p-4 border-t border-[#EED9C4]/20 bg-black/40 flex items-center justify-between text-xs sm:text-sm text-white/90">
+      <span>Active sensory decompression arena</span>
+      <button onclick="window.app.closeFloatingArena()" class="btn-butter px-4 py-1.5 rounded-lg text-xs font-bold cursor-pointer">
+        Return to Plan
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: 4-7-8 GUIDED BREATHING SANCTUARY    -->
+  <!-- ========================================== -->
+  <div id="breathingSanctuaryModal" class="fixed inset-0 z-50 bg-[#031110]/95 backdrop-blur-xl hidden flex flex-col items-center justify-center p-6 text-center animate-fadeIn select-none">
+    <button onclick="window.app.closeBreathingSanctuary()" class="absolute top-6 right-6 w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer">✕</button>
+
+    <div class="max-w-md w-full space-y-8">
+      <div class="space-y-1">
+        <span class="text-3xl">🪷</span>
+        <h3 class="font-serif text-2xl sm:text-3xl text-beigeLight font-bold">Box Breathing Sanctuary</h3>
+        <p class="text-xs sm:text-sm text-white/80">Regulate your vagus nerve and slow heart rate in 30 seconds.</p>
+      </div>
+
+      <!-- Expanding Glowing Lotus Ring -->
+      <div class="relative w-64 h-64 mx-auto flex items-center justify-center">
+        <div id="breathingRing" class="absolute inset-0 rounded-full border-4 border-butter/40 transition-all duration-1000 ease-in-out"></div>
+        <div id="breathingInner" class="w-36 h-36 rounded-full bg-gradient-to-tr from-[#EED9C4]/30 to-butter/30 backdrop-blur-md border border-butter/60 flex flex-col items-center justify-center transition-all duration-1000 ease-in-out shadow-[0_0_50px_rgba(255,245,184,0.35)]">
+          <span id="breathingPhase" class="text-base font-bold text-butter">Inhale</span>
+          <span id="breathingTimer" class="text-3xl font-serif text-white font-bold mt-1">4</span>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <p id="breathingInstruction" class="text-base text-white font-bold">Breathe in smoothly through your nose...</p>
+        <p class="text-xs text-white/60">4s Inhale • 7s Hold • 8s Exhale</p>
+      </div>
+
+      <button onclick="window.app.closeBreathingSanctuary()" class="btn-butter px-7 py-3 rounded-xl text-sm font-bold cursor-pointer">
+        I Feel Grounded Now
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: TIE-BREAKER COIN FLIP GUT-CHECK     -->
+  <!-- ========================================== -->
+  <div id="coinFlipModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden animate-fadeIn">
+    <div class="glass-card max-w-sm w-full p-5 sm:p-6 space-y-4 shadow-2xl border-butter/40 bg-[#031614]/95 text-center">
+      <div class="flex items-center justify-between border-b border-[#EED9C4]/20 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🪙</span>
+          <h3 class="font-serif text-lg text-beigeLight font-bold">Gut-Check Coin Flip</h3>
+        </div>
+        <button onclick="window.app.closeCoinFlipModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer">✕</button>
+      </div>
+
+      <p class="text-xs sm:text-sm text-white/90 leading-relaxed font-medium">
+        When the coin is in the air, notice which outcome you secretly hope lands. That is your actual decision.
+      </p>
+
+      <div class="space-y-2 text-left">
+        <input id="coinOptionA" type="text" placeholder="Option A (e.g. Send the text)" class="w-full bg-black/40 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-white/40 focus:outline-none focus:border-butter font-medium">
+        <input id="coinOptionB" type="text" placeholder="Option B (e.g. Sleep on it)" class="w-full bg-black/40 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-white/40 focus:outline-none focus:border-butter font-medium">
+      </div>
+
+      <!-- 3D Coin Visual -->
+      <div class="py-4">
+        <div id="coinVisual" class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-amber-400 via-yellow-200 to-amber-500 border-2 border-white/70 flex items-center justify-center text-tealDeep font-serif text-3xl font-extrabold shadow-2xl transition-all duration-700">
+          ?
+        </div>
+        <p id="coinResultText" class="text-sm sm:text-base font-bold text-butter mt-3 min-h-[22px]"></p>
+      </div>
+
+      <button id="coinFlipBtn" onclick="window.app.flipCoin()" class="w-full btn-butter py-3 rounded-xl text-sm font-bold cursor-pointer">
+        Flip the Coin
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: 100% PRIVATE USP MODAL              -->
+  <!-- ========================================== -->
+  <div id="whyModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden animate-fadeIn">
+    <div class="glass-card max-w-md w-full p-5 sm:p-6 space-y-4 shadow-2xl border-[#EED9C4]/40 bg-[#031614]/95 text-left">
+      <div class="flex items-center justify-between border-b border-[#EED9C4]/20 pb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-5 h-5 text-butter"></i>
+          <h3 class="font-serif text-lg text-beigeLight font-bold">100% On-Device & Private</h3>
+        </div>
+        <button onclick="window.app.closeWhyModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs sm:text-sm text-white/90 leading-relaxed font-medium">
+        <p><strong class="text-butter">Zero Cloud Storage:</strong> Everything typed or spoken stays strictly inside your browser's local memory. No servers, no tracking, no external API logs.</p>
+        <p><strong class="text-butter">Private Session Vault:</strong> Archived sessions are saved in your browser's private <code class="bg-black/40 px-1.5 py-0.5 rounded text-butter">localStorage</code>. Clear anytime with one click.</p>
+        <p><strong class="text-butter">Offline Ready:</strong> You can save this single <code class="bg-black/40 px-1.5 py-0.5 rounded text-butter">index.html</code> file on your computer and run it without Wi-Fi.</p>
+      </div>
+
+      <button onclick="window.app.closeWhyModal()" class="w-full btn-butter py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer">
+        Understood & Safe
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: TOUR / GUIDE MODAL                  -->
+  <!-- ========================================== -->
+  <div id="tourModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden animate-fadeIn">
+    <div class="glass-card max-w-md w-full p-5 sm:p-6 space-y-4 shadow-2xl border-butter/30 bg-[#031614]/95 text-left">
+      <div class="flex items-center justify-between border-b border-[#EED9C4]/20 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">✨</span>
+          <h3 class="font-serif text-lg text-beigeLight font-bold">Untangle Quick Guide</h3>
+        </div>
+        <button onclick="window.app.closeTourModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs sm:text-sm text-white/90 leading-relaxed font-medium">
+        <div class="p-3.5 bg-black/40 rounded-xl border border-white/15">
+          <strong class="text-butter block mb-1">1. Vent Freely (Screen 1)</strong>
+          Pour out your thoughts, speak with the mic, or try a realistic dilemma card. Live scanner softens harsh self-talk.
+        </div>
+        <div class="p-3.5 bg-black/40 rounded-xl border border-white/15">
+          <strong class="text-butter block mb-1">2. Untangle Emotion & Pop Loops (Screen 2)</strong>
+          View your vertical emotion intensity chart without truncation, separate reality from panic, and pop overthinking loops into water droplets.
+        </div>
+        <div class="p-3.5 bg-black/40 rounded-xl border border-white/15">
+          <strong class="text-butter block mb-1">3. Clarity & Action Toolkit (Screen 3)</strong>
+          Get ready-to-copy communication drafts, athlete recovery playbooks, 15-minute timers, top coin flip, and somatic resets.
+        </div>
+      </div>
+
+      <button onclick="window.app.closeTourModal()" class="w-full btn-butter py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer">
+        Got It, Let's Start
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: CONTEXT HELP POPUP                  -->
+  <!-- ========================================== -->
+  <div id="contextHelpModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden animate-fadeIn">
+    <div class="glass-card max-w-sm w-full p-5 space-y-3 shadow-2xl border-butter/30 bg-[#031614]/95 text-left">
+      <div class="flex items-center justify-between border-b border-[#EED9C4]/20 pb-2.5">
+        <h4 id="helpModalTitle" class="font-serif text-base text-beigeLight font-bold">How This Helps</h4>
+        <button onclick="window.app.closeContextHelp()" class="text-xs text-white/60 hover:text-white cursor-pointer font-bold">✕</button>
+      </div>
+      <p id="helpModalBody" class="text-xs sm:text-sm text-white/90 leading-relaxed font-sans font-medium"></p>
+      <button onclick="window.app.closeContextHelp()" class="w-full btn-butter py-2 rounded-lg text-xs font-bold cursor-pointer">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <!-- GLOBAL TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 bg-[#031614] border border-butter/50 text-butter text-xs sm:text-sm px-5 py-3 rounded-xl shadow-2xl pointer-events-none opacity-0 transition-opacity duration-300 font-bold">
+    Notification
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC ENGINE                     -->
+  <!-- ========================================== -->
+  <script>
+  (function() {
+    'use strict';
+
+    // --- 1. WEB AUDIO SYNTHESIZER ---
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playPenScratch() {
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(140, this.ctx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.12);
+      }
+      playPopChime() {
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(580, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.15);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.15);
+      }
+      playCelebrationChime() {
+        this.init();
+        if (!this.ctx) return;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          setTimeout(() => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+            gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start();
+            osc.stop(this.ctx.currentTime + 0.35);
+          }, idx * 100);
+        });
+      }
+      playSoftClick() {
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.05);
+      }
+      playCoinSpin() {
+        this.init();
+        if (!this.ctx) return;
+        for (let i = 0; i < 7; i++) {
+          setTimeout(() => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(1200 + i * 80, this.ctx.currentTime);
+            gain.gain.setValueAtTime(0.09, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.06);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start();
+            osc.stop(this.ctx.currentTime + 0.06);
+          }, i * 90);
+        }
+      }
+      playCoinLand() {
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(987.77, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.4);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.4);
+      }
+    }
+
+    // --- 2. PARTICLE ENGINE (Water Droplets & Sparkles) ---
+    class ParticleEngine {
+      constructor() {
+        this.canvas = document.getElementById('particleCanvas');
+        this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
+        this.particles = [];
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        this.animate();
+      }
+      resize() {
+        if (!this.canvas) return;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+      }
+      burst(x, y, color = '#FFF5B8', count = 35) {
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 6 + 2;
+          this.particles.push({
+            x, y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 1.5,
+            radius: Math.random() * 3.5 + 1.5,
+            color: color || (Math.random() > 0.5 ? '#FFF5B8' : '#FDBA74'),
+            alpha: 1,
+            decay: Math.random() * 0.03 + 0.02,
+            gravity: 0.18
+          });
+        }
+      }
+      celebrate() {
+        const colors = ['#FFF5B8', '#FDBA74', '#F5E6D3', '#FDA4AF', '#FFFFFF'];
+        for (let i = 0; i < 75; i++) {
+          this.particles.push({
+            x: window.innerWidth * Math.random(),
+            y: window.innerHeight * 0.35,
+            vx: (Math.random() - 0.5) * 10,
+            vy: (Math.random() - 0.7) * 8,
+            radius: Math.random() * 4 + 2,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            alpha: 1,
+            decay: Math.random() * 0.015 + 0.01,
+            gravity: 0.12
+          });
+        }
+      }
+      animate() {
+        if (this.ctx && this.particles.length > 0) {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+          for (let i = this.particles.length - 1; i >= 0; i--) {
+            const p = this.particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += p.gravity;
+            p.alpha -= p.decay;
+            if (p.alpha <= 0) {
+              this.particles.splice(i, 1);
+              continue;
+            }
+            this.ctx.save();
+            this.ctx.globalAlpha = p.alpha;
+            this.ctx.fillStyle = p.color;
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.restore();
+          }
+        }
+        requestAnimationFrame(() => this.animate());
+      }
+    }
+
+    // --- 3. UPGRADED LIVE SCANNER WORD LISTS ---
+    const TRAP_WORDS = [
+      // Profanities & Harsh Slang
+      { word: "fuck", softened: "let out frustration", type: "profanity" },
+      { word: "fucking", softened: "intensely", type: "profanity" },
+      { word: "shit", softened: "rough spot", type: "profanity" },
+      { word: "screw", softened: "step away from", type: "profanity" },
+      { word: "bitch", softened: "vent about this", type: "profanity" },
+      { word: "damn", softened: "frustrating", type: "profanity" },
+      { word: "crap", softened: "difficult mess", type: "profanity" },
+
+      // Extreme Cognitive Distortions
+      { word: "always", softened: "frequently lately", type: "distortion" },
+      { word: "never", softened: "rarely right now", type: "distortion" },
+      { word: "ruined", softened: "disrupted right now", type: "distortion" },
+      { word: "ruining", softened: "straining right now", type: "distortion" },
+      { word: "hate", softened: "deeply frustrated with", type: "distortion" },
+      { word: "hate myself", softened: "being excessively hard on myself", type: "distortion" },
+      { word: "failing", softened: "struggling right now", type: "distortion" },
+      { word: "failed", softened: "hit a setback", type: "distortion" },
+      { word: "failure", softened: "unresolved attempt", type: "distortion" },
+      { word: "impossible", softened: "heavy right now", type: "distortion" },
+      { word: "worthless", softened: "temporarily depleted", type: "distortion" },
+      { word: "pointless", softened: "unclear right now", type: "distortion" },
+      { word: "disaster", softened: "unresolved challenge", type: "distortion" },
+      { word: "everybody", softened: "some people", type: "distortion" },
+      { word: "nobody", softened: "few people right now", type: "distortion" },
+      { word: "forever", softened: "for the moment", type: "distortion" },
+      { word: "worst", softened: "challenging", type: "distortion" },
+
+      // Filter & Filler Words
+      { word: "literally", softened: "practically", type: "filler" },
+      { word: "completely", softened: "partially", type: "filler" },
+      { word: "totally", softened: "somewhat", type: "filler" },
+      { word: "just", softened: "currently", type: "filler" },
+      { word: "honestly", softened: "openly", type: "filler" },
+      { word: "basically", softened: "essentially", type: "filler" },
+      { word: "seriously", softened: "genuinely", type: "filler" },
+      { word: "actually", softened: "in reality", type: "filler" },
+
+      // Hinglish Stress Phrases
+      { word: "dimaag kharab", softened: "mentally exhausted", type: "hinglish" },
+      { word: "sab bekaar hai", softened: "feeling overwhelmed right now", type: "hinglish" },
+      { word: "kuch samajh nahi aa raha", softened: "needing clarity", type: "hinglish" },
+      { word: "bore ho gaya", softened: "needing a mental reset", type: "hinglish" },
+      { word: "faaltu", softened: "unimportant right now", type: "hinglish" }
+    ];
+
+    // --- 4. PRESET DILEMMA DATA (Restored from Image 2) ---
+    const PRESET_DILEMMAS = [
+      {
+        title: "Relationship & Hurt",
+        conditionKey: "relationship",
+        text: "I had an argument earlier and I honestly don't know why they reacted so defensively. Part of me is furious, but mostly I just feel deeply hurt and let down. I feel like they NEVER listen to me and this ALWAYS happens. I've been replaying what was said in my head for hours and wondering if I should apologize or just stay quiet. It feels literally impossible to talk when they completely shut me out and just ignore my side."
+      },
+      {
+        title: "Lost a Big Match",
+        conditionKey: "sports",
+        text: "We just lost our finals soccer match after leading for the entire first half. I missed a crucial chance in the closing minutes that cost us the tournament. The whole team was silent in the locker room and I can't stop replaying that exact split-second kick in my head. I feel completely crushed and like I let down my coach and teammates."
+      },
+      {
+        title: "Brain Fog & Burnout",
+        conditionKey: "brainfog",
+        text: "Tasks are piling up and my brain is so completely exhausted I can't even pick which one to start. Every little notification makes my chest tight. I feel like I'm failing everyone and falling weeks behind, dimaag kharab ho gaya hai aur kuch samajh nahi aa raha."
+      },
+      {
+        title: "Startup / Project Setback",
+        conditionKey: "startup",
+        text: "Our biggest pilot client just churned out of nowhere and our main demo failed in front of investors this morning. I've been grinding 16-hour days for 4 months with zero savings left and now I'm paralyzed wondering if this entire startup was a huge mistake and if I should just shut it down."
+      },
+      {
+        title: "Crossroads Paralysis",
+        conditionKey: "crossroads",
+        text: "I am paralyzed between two paths. Either I stay in this safe, predictable situation where I'm slowly dying of boredom, or take the huge risky leap that could blow up in my face. I'm terrified of making the worst choice and living with regret forever."
+      },
+      {
+        title: "2 AM Overthinking Spiral",
+        conditionKey: "academic",
+        text: "It is 2 AM and I'm staring at the ceiling in a complete panic spiral. Tomorrow's review deadline is looming, I feel like a total fraud, convinced my code will break during live presentation and everyone will realize I have no idea what I'm doing."
+      }
+    ];
+
+    // --- 5. DETAILED HIGH-EQ SITUATIONAL CONDITIONS (EVERYDAY HUMAN LABELS!) ---
+    const CONDITIONS = {
+      // SITUATION A: RELATIONSHIP / BREAKUP / ARGUMENT
+      relationship: {
+        tag: "Relationship & Hurt",
+        dominantBadge: "Feeling Hurt & Heated",
+        type: "relationship",
+        breakdown: [
+          { label: "Feeling Hurt", sub: "Emotional Sting", pct: 64, gradient: "from-[#FFF5B8]/30 to-[#FFF5B8]", textColor: "text-[#FFF5B8]" },
+          { label: "Anger & Heat", sub: "Frustration", pct: 32, gradient: "from-[#FDBA74]/30 to-[#FDBA74]", textColor: "text-[#FDBA74]" },
+          { label: "Overthinking", sub: "Replaying It", pct: 56, gradient: "from-[#EED9C4]/30 to-[#EED9C4]", textColor: "text-[#EED9C4]" },
+          { label: "Wanting Peace", sub: "Ready to Fix", pct: 72, gradient: "from-[#FDA4AF]/30 to-[#FDA4AF]", textColor: "text-[#FDA4AF]" }
+        ],
+        insight: "Relational arguments trigger our mammalian attachment panic. When someone we care about responds defensively, our nervous system reads it as sudden abandonment. Separating their defensive reaction from your fundamental self-worth is the key to clarity.",
+        grounding: [
+          "People lash out from their own internal dysregulation and fear, not exclusively because of what you did.",
+          "Sending an emotionally charged paragraph right now will only trigger their defense mechanisms further.",
+          "Taking a 2-hour intentional pause protects the relationship far better than immediate retaliation."
+        ],
+        traps: [
+          "Assuming their defensive reaction means they never cared about you",
+          "Replaying the argument on an infinite loop trying to rewrite their response",
+          "Believing that if you don't text back right now, the entire connection is permanently ruined"
+        ],
+        inControl: [
+          "Deciding when and how calmly you will choose to respond",
+          "Stepping away from your phone for the next 45 minutes",
+          "Stating your boundaries with clarity and zero name-calling",
+          "Validating your own hurt feelings before seeking their approval"
+        ],
+        letGo: [
+          "Controlling how quickly they read or reply to your messages",
+          "Forcing them to admit fault while they are still emotionally flooded",
+          "Fixing their defensive habits or emotional maturity",
+          "Worrying about what they are thinking in this exact second"
+        ],
+        drafts: [
+          {
+            title: "Warm & Honest",
+            badge: "De-escalates Tension",
+            text: "Hey, I wanted to follow up on our conversation earlier. I value our connection and I want to hear your perspective without either of us feeling defensive. Let's talk when we're both in a calm headspace."
+          },
+          {
+            title: "Healthy Space Boundary",
+            badge: "Sets Respectful Pause",
+            text: "I appreciate you bringing this up. Right now my head is a bit full and I want to give this the thoughtful attention it deserves. Give me a little time to reflect and I'll get back to you later today."
+          },
+          {
+            title: "Low-Drama Check-In",
+            badge: "Minimal & Grounded",
+            text: "Got it. Thanks for letting me know. I'm going to take a breath and review things calmly so we can figure out the best next step together."
+          }
+        ],
+        blueprintSteps: [
+          { duration: "03:00", label: "Put phone face-down in another room to break reply dopamine loop" },
+          { duration: "05:00", label: "Splash cold water on face to reset autonomic heart rate" },
+          { duration: "07:00", label: "Select and copy one low-drama draft below without second-guessing" }
+        ],
+        reframe: "Their defense mechanism is about their nervous system, not your worth. Calmness is your superpower.",
+        perspectives: {
+          tomorrow: "Tomorrow, a calm, measured boundary will earn 10x more respect than a midnight emotional novel.",
+          nextMonth: "In 30 days, what will matter is whether you communicated with dignity, not who won the argument.",
+          nextYear: "In 1 year, this dispute will either be a forgotten blip or a turning point in your emotional boundaries."
+        }
+      },
+
+      // SITUATION B: SPORTS LOSS / ATHLETIC SETBACK
+      sports: {
+        tag: "Lost a Big Match",
+        dominantBadge: "Post-Match Disappointment",
+        type: "sports",
+        breakdown: [
+          { label: "Disappointment", sub: "Sting of Losing", pct: 62, gradient: "from-[#FFF5B8]/30 to-[#FFF5B8]", textColor: "text-[#FFF5B8]" },
+          { label: "Replay Loop", sub: "Thinking of Mistakes", pct: 48, gradient: "from-[#FDBA74]/30 to-[#FDBA74]", textColor: "text-[#FDBA74]" },
+          { label: "Physical Drain", sub: "Tired Body", pct: 52, gradient: "from-[#EED9C4]/30 to-[#EED9C4]", textColor: "text-[#EED9C4]" },
+          { label: "Next-Match Hunger", sub: "Drive to Improve", pct: 85, gradient: "from-[#FDA4AF]/30 to-[#FDA4AF]", textColor: "text-[#FDA4AF]" }
+        ],
+        insight: "Athletic defeats sting because you put real sweat and sacrifice on the line. When the final whistle blows, intense physical depletion combines with a cortisol crash to make one defeat feel like a complete condemnation. Elite champions don't drown in the score—they extract the data.",
+        grounding: [
+          "One lost match or missed penalty is a single data point in a long athletic career.",
+          "Physical exhaustion amplifies emotional devastation; your brain is literally starved of glycogen right now.",
+          "Every world-class athlete has suffered brutal losses; their legacy was built in the 24 hours that followed."
+        ],
+        traps: [
+          "Replaying that single missed kick or error on an endless loop in bed",
+          "Believing that months of disciplined training and sweat were completely wasted",
+          "Assuming your teammates or coach hold permanent resentment toward you"
+        ],
+        inControl: [
+          "Your recovery nutrition, electrolytes, and 8 hours of deep sleep tonight",
+          "Extracting exactly 1 tactical technical adjustment for the next practice session",
+          "Holding your head high in the locker room and demonstrating sportsmanship",
+          "Showing up to the next training session with clean, focused intensity"
+        ],
+        letGo: [
+          "The referee calls and final tournament score that cannot be changed",
+          "The missed shot or split-second play that has already passed",
+          "What spectators, rivals, or social media might be saying",
+          "Wishing you could rewind time to replay the closing minutes"
+        ],
+        mantras: [
+          {
+            title: "Data Over Destiny",
+            badge: "Locker-Room Mantra 01",
+            text: "One game is data, not destiny. The scoreboard tests skill; your response tests character."
+          },
+          {
+            title: "The 10-Minute Rule",
+            badge: "Locker-Room Mantra 02",
+            text: "Review the game tape for 10 minutes, write down 1 tactical adjustment for training, then close the mental file."
+          },
+          {
+            title: "The Next Rep",
+            badge: "Locker-Room Mantra 03",
+            text: "Tomorrow's training doesn't care about today's whistle. Sleep, refuel, and come back sharper."
+          }
+        ],
+        blueprintSteps: [
+          { duration: "04:00", label: "Write down 1 tactical technical fix for next practice, then close notebook" },
+          { duration: "05:00", label: "Drink 500ml electrolyte water and take a cool shower to flush lactic acid" },
+          { duration: "06:00", label: "Commit to 8 hours of sleep to let muscle fibers and neural pathways rebuild" }
+        ],
+        reframe: "Defeat is the tuition you pay for mastery. The best competitors in history are forged in post-game recovery.",
+        perspectives: {
+          tomorrow: "Tomorrow, your body needs clean fuel and rest. The emotional sting will drop by 50% after deep sleep.",
+          nextMonth: "In a month, nobody remembers the score—they only see the sharper, hungrier player who returned to the court.",
+          nextYear: "In 1 year, this match will be the exact catalyst that sharpened your technique for the championship."
+        }
+      },
+
+      // SITUATION C: STARTUP / PROJECT / HACKATHON SETBACK
+      startup: {
+        tag: "Startup & Project Setback",
+        dominantBadge: "Venture Stress & Deadlines",
+        type: "startup",
+        breakdown: [
+          { label: "Venture Stress", sub: "Pitch Pressure", pct: 58, gradient: "from-[#FFF5B8]/30 to-[#FFF5B8]", textColor: "text-[#FFF5B8]" },
+          { label: "Burnout Dip", sub: "Long Sprints", pct: 40, gradient: "from-[#FDBA74]/30 to-[#FDBA74]", textColor: "text-[#FDBA74]" },
+          { label: "Scope Panic", sub: "Too Many Fixes", pct: 46, gradient: "from-[#EED9C4]/30 to-[#EED9C4]", textColor: "text-[#EED9C4]" },
+          { label: "Builder Grit", sub: "Shipping Drive", pct: 78, gradient: "from-[#FDA4AF]/30 to-[#FDA4AF]", textColor: "text-[#FDA4AF]" }
+        ],
+        insight: "When submission windows close or a demo crashes, your working memory panics and tries to fix every theoretical edge case simultaneously. A product dip is not your identity as a builder. Users and judges evaluate one working core loop, not invisible perfection.",
+        grounding: [
+          "A submitted 80% working build beats an unsubmitted 100% fantasy every single day.",
+          "Opening 15 new code tabs late at night causes cognitive thrashing; your neural battery is low.",
+          "Submitting on time and sleeping tonight protects tomorrow's presentation and pitch energy."
+        ],
+        traps: [
+          "Panicking about the entire architecture instead of shipping the next 15-minute fix",
+          "Believing every other builder or team has a flawless product while yours is duct-taped",
+          "Rewriting working features from scratch at 2 AM"
+        ],
+        inControl: [
+          "Locking in the current working build and freezing non-essential features",
+          "Recording a clean 60-second backup demo video of the primary flow",
+          "Writing a 3-bullet pitch focusing strictly on the core problem solved",
+          "Closing all non-essential IDE tabs to reduce cognitive overload"
+        ],
+        letGo: [
+          "Trying to build every edge case feature before the deadline",
+          "Worrying about what competitors or other founders are building",
+          "The temporary server glitch that occurred during the earlier demo",
+          "The investor who passed on your pitch this morning"
+        ],
+        manifesto: [
+          {
+            title: "The Golden Rule of Shipping",
+            badge: "Builder Rule 01",
+            text: "A submitted 80% working build beats an unsubmitted 100% fantasy every single day."
+          },
+          {
+            title: "Simplicity Wins",
+            badge: "Builder Rule 02",
+            text: "Users judge one killer, unbroken workflow, not 5 half-finished ideas. Cut scope and polish the core."
+          },
+          {
+            title: "The Next 15 Minutes",
+            badge: "Builder Rule 03",
+            text: "Execute the immediate 15-minute checklist. Stop thinking about the entire roadmap; just ship this rep."
+          }
+        ],
+        blueprintSteps: [
+          { duration: "03:00", label: "Code freeze: Stop adding features and test the primary happy path end-to-end" },
+          { duration: "05:00", label: "Record a crisp 45-second screen recording of the core flow as demo insurance" },
+          { duration: "07:00", label: "Write a 3-bullet presentation script highlighting the 1 big problem solved" }
+        ],
+        reframe: "Great founders are not people whose code never breaks; they are people who stay calm and ship the fix.",
+        perspectives: {
+          tomorrow: "Tomorrow, judges and users will be thrilled to see a clean, functional demo that works reliably.",
+          nextMonth: "In 30 days, today's bug will be a funny engineering war story in your changelog.",
+          nextYear: "In 1 year, this project will be a proven cornerstone in your shipping portfolio."
+        }
+      },
+
+      // SITUATION D: EXAM FAILURE / APPLIED MATHS BACKLOG / ACADEMIC
+      academic: {
+        tag: "Exam Backlog & Study Stress",
+        dominantBadge: "Brain Fatigue & Backlog",
+        type: "academic",
+        breakdown: [
+          { label: "Brain Fatigue", sub: "Mental Overload", pct: 60, gradient: "from-[#FFF5B8]/30 to-[#FFF5B8]", textColor: "text-[#FFF5B8]" },
+          { label: "Time Pressure", sub: "Deadline Stress", pct: 36, gradient: "from-[#FDBA74]/30 to-[#FDBA74]", textColor: "text-[#FDBA74]" },
+          { label: "Self-Doubt", sub: "Feeling Behind", pct: 44, gradient: "from-[#EED9C4]/30 to-[#EED9C4]", textColor: "text-[#EED9C4]" },
+          { label: "Comeback Drive", sub: "Wanting to Win", pct: 74, gradient: "from-[#FDA4AF]/30 to-[#FDA4AF]", textColor: "text-[#FDA4AF]" }
+        ],
+        insight: "Academic anxiety spikes when we view an entire semester's syllabus as a massive, indivisible mountain. Your brain freezes because working memory cannot process 10 chapters simultaneously. When you isolate exactly 1 problem type for 15 minutes, paralysis evaporates.",
+        grounding: [
+          "Exams test pattern recognition, not genius. Mastering 3 high-weight problem archetypes guarantees passing.",
+          "Staring at the table of contents creates 10x more anxiety than actually solving problem #1.",
+          "Your past academic scores do not define your intelligence or future career trajectory."
+        ],
+        traps: [
+          "Trying to read 200 pages in one sitting while retaining zero concepts",
+          "Believing everyone else in your batch has completed the syllabus without struggle",
+          "Giving up entirely because you feel too far behind to catch up"
+        ],
+        inControl: [
+          "Isolating 1 single high-weight topic and working through 2 solved examples",
+          "Using a 15-minute countdown timer with your phone in do-not-disturb mode",
+          "Writing formulas down by hand to engage motor memory",
+          "Getting 7 hours of sleep before the exam to consolidate memory"
+        ],
+        letGo: [
+          "The marks of previous tests that are already recorded",
+          "Worrying about grade curves before you've answered the questions",
+          "The topics that you realistically do not have time to master tonight",
+          "Comparing your study pace to classmates in group chats"
+        ],
+        blueprintSteps: [
+          { duration: "03:00", label: "Open past-year papers and circle the top 3 most repeated question types" },
+          { duration: "05:00", label: "Read through 1 solved example step-by-step and write formulas on paper" },
+          { duration: "07:00", label: "Solve 1 practice problem independently without looking at the answer key" }
+        ],
+        reframe: "You do not need to know everything to succeed; you just need to execute the next problem with clarity.",
+        perspectives: {
+          tomorrow: "Tomorrow, knowing 3 core concepts solidly will score higher than having vague panic about 10 chapters.",
+          nextMonth: "In a month, this exam will be finished and behind you.",
+          nextYear: "In 1 year, nobody in your life or career will ask what score you got on this specific exam."
+        }
+      },
+
+      // SITUATION E: BRAIN FOG / HINGLISH VENTING / LIFE OVERWHELM
+      brainfog: {
+        tag: "Brain Fog & Life Overwhelm",
+        dominantBadge: "Mental Fog & Depletion",
+        type: "brainfog",
+        breakdown: [
+          { label: "Mental Fog", sub: "Cloudy Head", pct: 62, gradient: "from-[#FFF5B8]/30 to-[#FFF5B8]", textColor: "text-[#FFF5B8]" },
+          { label: "Body Exhaustion", sub: "Low Energy", pct: 42, gradient: "from-[#FDBA74]/30 to-[#FDBA74]", textColor: "text-[#FDBA74]" },
+          { label: "Life Uncertainty", sub: "Feeling Lost", pct: 50, gradient: "from-[#EED9C4]/30 to-[#EED9C4]", textColor: "text-[#EED9C4]" },
+          { label: "Need for Rest", sub: "Time to Recharge", pct: 75, gradient: "from-[#FDA4AF]/30 to-[#FDA4AF]", textColor: "text-[#FDA4AF]" }
+        ],
+        insight: "When you feel like 'dimaag kharab hai' or life is completely overwhelmed, you are experiencing biological RAM saturation. Your brain has reached its limit of unprocessed inputs. You do not need to make major life decisions right now; you need a somatic system reboot.",
+        grounding: [
+          "Brain fog is biological fatigue, not personal failure or incompetence.",
+          "When you are depleted, minor inconveniences feel like catastrophic emergencies.",
+          "A glass of water, fresh air, and stepping away from screens restores cognitive function within 20 minutes."
+        ],
+        traps: [
+          "Trying to solve your entire 5-year life plan while your nervous system is saturated",
+          "Scrolling social media as an 'escape', which only dumps more noise into your working memory",
+          "Labeling yourself as lazy when your body is signaling acute exhaustion"
+        ],
+        inControl: [
+          "Closing your laptop and lying down in a dark room for 15 minutes",
+          "Drinking 300ml of water and having a light, nourishing snack",
+          "Writing down only 1 single task to complete today and parking the rest",
+          "Saying no to non-essential requests tonight"
+        ],
+        letGo: [
+          "Fixing everything on your to-do list before going to bed",
+          "Worrying about why you don't feel 100% motivated today",
+          "External chaos or circumstances outside your immediate room",
+          "Guilt over taking a necessary recovery evening"
+        ],
+        blueprintSteps: [
+          { duration: "03:00", label: "Put phone on airplane mode and step away from all illuminated screens" },
+          { duration: "05:00", label: "Wash face with cold water and drink a full glass of cool water" },
+          { duration: "07:00", label: "Lie down with eyes closed, allowing thoughts to drift without engaging them" }
+        ],
+        reframe: "Rest is not a reward you earn after working; it is the biological prerequisite for clear thinking.",
+        perspectives: {
+          tomorrow: "Tomorrow morning, after a night of restorative sleep, this problem will look 50% smaller.",
+          nextMonth: "In 30 days, taking this evening to recharge will be the best decision you made this week.",
+          nextYear: "In 1 year, you will be grateful you learned to listen to your body instead of burning out."
+        }
+      },
+
+      // SITUATION F: CROSSROADS / TOUGH DECISION / GENERAL
+      crossroads: {
+        tag: "Crossroads & Decision Paralysis",
+        dominantBadge: "Fear of Regret & Confusion",
+        type: "crossroads",
+        breakdown: [
+          { label: "Fear of Regret", sub: "Wrong Choice", pct: 55, gradient: "from-[#FFF5B8]/30 to-[#FFF5B8]", textColor: "text-[#FFF5B8]" },
+          { label: "Mental Confusion", sub: "Too Many Options", pct: 40, gradient: "from-[#FDBA74]/30 to-[#FDBA74]", textColor: "text-[#FDBA74]" },
+          { label: "Over-Analyzing", sub: "Spinning Wheels", pct: 50, gradient: "from-[#EED9C4]/30 to-[#EED9C4]", textColor: "text-[#EED9C4]" },
+          { label: "Gut Instinct", sub: "Deep Down You Know", pct: 78, gradient: "from-[#FDA4AF]/30 to-[#FDA4AF]", textColor: "text-[#FDA4AF]" }
+        ],
+        insight: "Decision paralysis happens when both choices carry uncertainty. Your brain stalls trying to find the 'guaranteed perfect' option that has zero downside. In reality, most decisions are two-way doors: you make the best choice with current data, and course-correct later.",
+        grounding: [
+          "There is rarely a single 'perfect' path; fulfillment is built after you commit to the choice.",
+          "Staying stuck in indecision is itself an active decision—the most costly and exhausting one.",
+          "Your gut often already knows the right direction; logic is just trying to protect against discomfort."
+        ],
+        traps: [
+          "Waiting for 100% certainty before taking the first step",
+          "Believing that one wrong choice will permanently ruin your future",
+          "Polling 10 different friends and getting 10 contradictory opinions"
+        ],
+        inControl: [
+          "Choosing one path for a 14-day trial without second-guessing",
+          "Listing the worst-case scenario and writing a concrete recovery plan",
+          "Using the coin flip gut-check to uncover your true subconscious preference",
+          "Committing fully to the choice you make today"
+        ],
+        letGo: [
+          "The theoretical fantasy of the path you didn't choose",
+          "Seeking universal approval from everyone around you",
+          "Controlling outcomes 2 years down the road",
+          "Regretting past decisions made with less information"
+        ],
+        blueprintSteps: [
+          { duration: "03:00", label: "Open the Gut-Check Coin Flip right above and test Option A vs Option B" },
+          { duration: "05:00", label: "Notice which outcome you secretly hope for while the coin is in the air" },
+          { duration: "07:00", label: "Write down the single next step for that choice and commit to it" }
+        ],
+        reframe: "Clarity comes from action, not from sitting in the waiting room of indecision.",
+        perspectives: {
+          tomorrow: "Tomorrow, having made a choice will give you immense psychological relief and forward momentum.",
+          nextMonth: "In 30 days, you will be deep in execution and wondering why you agonized so long.",
+          nextYear: "In 1 year, you will realize that courage mattered far more than perfect information."
+        }
+      }
+    };
+
+    // --- 6. CORE UNTANGLE APPLICATION CONTROLLER ---
+    class UntangleApp {
+      constructor() {
+        this.currentScreen = 1;
+        this.sound = new SoundEngine();
+        this.particles = new ParticleEngine();
+
+        // User Profile State
+        this.profile = {
+          name: '',
+          role: '💻 Vibe Coder',
+          mood: '⚡ Overwhelmed'
+        };
+
+        // Screen 2 State
+        this.poppedCount = 0;
+        this.totalBubbles = 3;
+        this.currentCondition = null;
+
+        // Screen 3 Checklist & Timer State
+        this.checklistState = [false, false, false];
+        this.activeHorizon = 'tomorrow';
+        this.focusTimerInterval = null;
+        this.focusTimerSeconds = 900; // 15:00
+        this.isTimerRunning = false;
+
+        // Microphone State (Instant 0ms Streaming)
+        this.recognition = null;
+        this.isRecording = false;
+        this.recordedBaseText = '';
+
+        // Arena State
+        this.arenaCanvas = null;
+        this.arenaCtx = null;
+        this.arenaBubbles = [];
+        this.arenaAnimId = null;
+
+        // Breathing Sanctuary State
+        this.breathingInterval = null;
+        this.breathingActive = false;
+      }
+
+      init() {
+        this.loadProfile();
+        this.updateGreetingUI();
+        this.renderHistoryList();
+        this.initMicrophone();
+        this.initScrollObserver();
+
+        if (window.lucide) {
+          window.lucide.createIcons();
+        }
+      }
+
+      // --- 1. COVER PAGE & DOTTA ONBOARDING FLOW ---
+      startCoverFlow() {
+        this.sound.playSoftClick();
+        if (!this.profile.name || this.profile.name.trim() === '') {
+          // Show Dotta-style Name & Vibe setup
+          const container = document.getElementById('coverOnboardingContainer');
+          if (container) {
+            container.classList.remove('hidden');
+            container.scrollIntoView({ behavior: 'smooth' });
+          }
+        } else {
+          // Directly show 3-Card briefing or enter workspace
+          this.proceedToBriefing();
+        }
+      }
+
+      selectCoverRole(role) {
+        this.profile.role = role;
+        this.sound.playSoftClick();
+        const grid = document.getElementById('coverRoleGrid');
+        if (grid) {
+          grid.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText.includes(role)) {
+              btn.classList.add('border-butter', 'bg-butter/20', 'text-butter');
+            } else {
+              btn.classList.remove('border-butter', 'bg-butter/20', 'text-butter');
+            }
+          });
+        }
+      }
+
+      selectCoverMood(mood) {
+        this.profile.mood = mood;
+        this.sound.playSoftClick();
+        const grid = document.getElementById('coverMoodGrid');
+        if (grid) {
+          grid.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText.includes(mood)) {
+              btn.classList.add('border-butter', 'bg-butter/20', 'text-butter');
+            } else {
+              btn.classList.remove('border-butter', 'bg-butter/20', 'text-butter');
+            }
+          });
+        }
+      }
+
+      proceedToBriefing() {
+        const input = document.getElementById('coverNameInput');
+        if (input && input.value.trim()) {
+          this.profile.name = input.value.trim();
+        }
+        this.saveProfileToStorage();
+        this.updateGreetingUI();
+        this.sound.playPopChime();
+
+        const onb = document.getElementById('coverOnboardingContainer');
+        if (onb) onb.classList.add('hidden');
+
+        const briefing = document.getElementById('coverBriefingCard');
+        if (briefing) {
+          briefing.classList.remove('hidden');
+          briefing.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+
+      enterWorkspace() {
+        this.sound.playCelebrationChime();
+        this.particles.celebrate();
+
+        const cover = document.getElementById('coverPage');
+        const workspace = document.getElementById('mainWorkspace');
+        if (cover) cover.classList.add('hidden');
+        if (workspace) workspace.classList.remove('hidden');
+
+        this.goToScreen(1);
+        if (window.lucide) window.lucide.createIcons();
+      }
+
+      showCoverPage() {
+        this.sound.playSoftClick();
+        const cover = document.getElementById('coverPage');
+        const workspace = document.getElementById('mainWorkspace');
+        if (workspace) workspace.classList.add('hidden');
+        if (cover) cover.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // --- USER PROFILE & SETTINGS ---
+      loadProfile() {
+        try {
+          const saved = localStorage.getItem('untangle_user_profile');
+          if (saved) {
+            this.profile = Object.assign(this.profile, JSON.parse(saved));
+          }
+        } catch (e) {
+          console.error("Could not load profile:", e);
+        }
+      }
+
+      updateGreetingUI() {
+        const greeting = document.getElementById('heroPersonalGreeting');
+        if (greeting) {
+          if (this.profile.name && this.profile.name.trim()) {
+            greeting.innerHTML = `What's weighing on your mind, <strong class="text-butter font-bold">${this.escapeHTML(this.profile.name)}</strong>?`;
+          } else {
+            greeting.innerText = "What's weighing on your mind right now?";
+          }
+        }
+
+        const roleBadge = document.getElementById('heroRoleBadge');
+        if (roleBadge) roleBadge.innerText = this.profile.role || '💻 Vibe Coder';
+
+        const moodBadge = document.getElementById('heroMoodBadge');
+        if (moodBadge) moodBadge.innerText = this.profile.mood || '⚡ Overwhelmed';
+      }
+
+      openProfileModal() {
+        this.sound.playSoftClick();
+        const modal = document.getElementById('profileModal');
+        const input = document.getElementById('profileNameInput');
+        if (input) input.value = this.profile.name || '';
+        if (modal) modal.classList.remove('hidden');
+      }
+
+      closeProfileModal() {
+        const modal = document.getElementById('profileModal');
+        if (modal) modal.classList.add('hidden');
+      }
+
+      selectPersona(role) {
+        this.profile.role = role;
+        this.sound.playSoftClick();
+        const grid = document.getElementById('profilePersonaGrid');
+        if (grid) {
+          grid.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText.includes(role)) {
+              btn.classList.add('border-butter', 'bg-butter/20', 'text-butter');
+            } else {
+              btn.classList.remove('border-butter', 'bg-butter/20', 'text-butter');
+            }
+          });
+        }
+      }
+
+      selectMood(mood) {
+        this.profile.mood = mood;
+        this.sound.playSoftClick();
+        const container = document.getElementById('profileMoodChips');
+        if (container) {
+          container.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText.includes(mood)) {
+              btn.classList.add('border-butter', 'bg-butter/20', 'text-butter');
+            } else {
+              btn.classList.remove('border-butter', 'bg-butter/20', 'text-butter');
+            }
+          });
+        }
+      }
+
+      saveProfile() {
+        const input = document.getElementById('profileNameInput');
+        if (input) {
+          this.profile.name = input.value.trim();
+        }
+        this.saveProfileToStorage();
+        this.updateGreetingUI();
+        this.closeProfileModal();
+        this.sound.playPopChime();
+        this.showToast("Profile & Mood updated.");
+      }
+
+      resetProfileToDefault() {
+        this.profile = {
+          name: '',
+          role: '💻 Vibe Coder',
+          mood: '⚡ Overwhelmed'
+        };
+        this.saveProfileToStorage();
+        this.updateGreetingUI();
+        this.closeProfileModal();
+        this.showToast("Profile reset.");
+      }
+
+      saveProfileToStorage() {
+        try {
+          localStorage.setItem('untangle_user_profile', JSON.stringify(this.profile));
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      // --- SCREEN 1: INPUT, WORD COUNT & LIVE SCANNER ---
+      handleInput(isManual = true) {
+        if (isManual) {
+          this.selectedPresetConditionKey = null;
+        }
+        const textarea = document.getElementById('thoughtInput');
+        if (!textarea) return;
+        const text = textarea.value;
+
+        const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+        const wordCountEl = document.getElementById('wordCount');
+        if (wordCountEl) wordCountEl.innerText = `${words} words`;
+
+        const badge = document.getElementById('ventingStateBadge');
+        if (badge) {
+          if (words === 0) {
+            badge.innerText = 'Ready';
+            badge.className = 'text-butter font-semibold';
+          } else if (words < 25) {
+            badge.innerText = 'Surface Layer';
+            badge.className = 'text-butter font-semibold';
+          } else if (words < 70) {
+            badge.innerText = 'Deep Venting';
+            badge.className = 'text-peachWarm font-bold';
+          } else {
+            badge.innerText = 'Full Catharsis';
+            badge.className = 'text-roseGold font-extrabold';
+          }
+        }
+
+        this.runLiveWordSoftener(text);
+      }
+
+      runLiveWordSoftener(text) {
+        const tray = document.getElementById('liveTrapWordTray');
+        const container = document.getElementById('trapWordChipsContainer');
+        const countBadge = document.getElementById('trapWordCountBadge');
+        if (!tray || !container) return;
+
+        if (!text || text.trim().length < 5) {
+          tray.classList.add('hidden');
+          container.innerHTML = '';
+          return;
+        }
+
+        const lower = text.toLowerCase();
+        const found = [];
+
+        TRAP_WORDS.forEach(item => {
+          const regex = new RegExp(`\\b${item.word}\\b`, 'i');
+          if (regex.test(lower)) {
+            found.push(item);
+          }
+        });
+
+        if (found.length === 0) {
+          tray.classList.add('hidden');
+          container.innerHTML = '';
+          return;
+        }
+
+        tray.classList.remove('hidden');
+        if (countBadge) countBadge.innerText = found.length;
+
+        container.innerHTML = found.map(item => `
+          <button onclick="window.app.softenWord('${item.word}', '${item.softened}')" 
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/50 hover:bg-butter hover:text-tealDeep border border-white/20 transition cursor-pointer text-xs font-sans group">
+            <span class="font-bold text-rose-300 group-hover:text-tealDeep">"${item.word}"</span>
+            <span class="text-white/60 group-hover:text-tealDeep">→</span>
+            <span class="text-butter group-hover:text-tealDeep font-bold">soften to "${item.softened}"</span>
+          </button>
+        `).join('');
+      }
+
+      softenWord(oldWord, softenedWord) {
+        const textarea = document.getElementById('thoughtInput');
+        if (!textarea) return;
+
+        const regex = new RegExp(`\\b${oldWord}\\b`, 'gi');
+        textarea.value = textarea.value.replace(regex, softenedWord);
+        this.handleInput();
+        this.sound.playPenScratch();
+        this.showToast(`Softened "${oldWord}" → "${softenedWord}"`);
+      }
+
+      loadDilemmaPreset(idx) {
+        const item = PRESET_DILEMMAS[idx];
+        if (!item) return;
+
+        this.selectedPresetConditionKey = item.conditionKey || null;
+
+        const textarea = document.getElementById('thoughtInput');
+        if (textarea) {
+          textarea.value = item.text;
+          this.handleInput(false);
+          this.sound.playSoftClick();
+          this.showToast(`Loaded dilemma: ${item.title}`);
+        }
+      }
+
+      // --- 6. MICROPHONE AUDIO DICTATION (0ms STREAMING TRANSCRIPTION!) ---
+      initMicrophone() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+          const micBtn = document.getElementById('micBtn');
+          if (micBtn) micBtn.title = "Microphone not supported in this browser.";
+          return;
+        }
+
+        this.recognition = new SpeechRecognition();
+        this.recognition.continuous = true;
+        this.recognition.interimResults = true; // 0ms STREAMING LATENCY!
+        this.recognition.lang = 'en-IN'; // Supports English and Hinglish smoothly
+
+        this.recognition.onstart = () => {
+          this.isRecording = true;
+          const textarea = document.getElementById('thoughtInput');
+          this.recordedBaseText = textarea ? textarea.value.trim() : '';
+          this.updateMicUI(true);
+          this.showToast("Listening... streaming your voice in real time.");
+        };
+
+        this.recognition.onresult = (event) => {
+          let interimTranscript = '';
+          let finalTranscript = '';
+
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              finalTranscript += transcript + ' ';
+            } else {
+              interimTranscript += transcript;
+            }
+          }
+
+          const textarea = document.getElementById('thoughtInput');
+          if (textarea) {
+            if (finalTranscript) {
+              this.recordedBaseText = (this.recordedBaseText + ' ' + finalTranscript).trim();
+            }
+            textarea.value = (this.recordedBaseText + (interimTranscript ? ' ' + interimTranscript : '')).trim();
+            this.handleInput();
+          }
+        };
+
+        this.recognition.onerror = (e) => {
+          console.error("SpeechRecognition error:", e);
+          this.isRecording = false;
+          this.updateMicUI(false);
+          this.showToast("Microphone paused.");
+        };
+
+        this.recognition.onend = () => {
+          this.isRecording = false;
+          this.updateMicUI(false);
+        };
+      }
+
+      toggleRealMicrophone() {
+        if (!this.recognition) {
+          this.showToast("Speech recognition not supported in this browser.");
+          return;
+        }
+        if (this.isRecording) {
+          this.recognition.stop();
+        } else {
+          try {
+            this.recognition.start();
+          } catch (e) {
+            this.recognition.stop();
+          }
+        }
+      }
+
+      updateMicUI(recording) {
+        const micBtn = document.getElementById('micBtn');
+        const micText = document.getElementById('micText');
+        const micIcon = document.getElementById('micIcon');
+        if (recording) {
+          if (micBtn) micBtn.classList.add('bg-butter/25', 'border-butter', 'ring-2', 'ring-butter', 'shadow-[0_0_25px_rgba(255,245,184,0.4)]');
+          if (micText) micText.innerText = "Listening live...";
+          if (micIcon) micIcon.classList.add('animate-pulse', 'text-butter');
+        } else {
+          if (micBtn) micBtn.classList.remove('bg-butter/25', 'border-butter', 'ring-2', 'ring-butter', 'shadow-[0_0_25px_rgba(255,245,184,0.4)]');
+          if (micText) micText.innerText = "Speak Freely";
+          if (micIcon) micIcon.classList.remove('animate-pulse', 'text-butter');
+        }
+      }
+
+      // --- START UNTANGLE & CLASSIFICATION ---
+      startUntangle() {
+        const textarea = document.getElementById('thoughtInput');
+        const text = textarea ? textarea.value.trim() : '';
+
+        if (!text || text.length < 5) {
+          this.showToast("Please write or speak a few words first.");
+          if (textarea) textarea.focus();
+          return;
+        }
+
+        this.sound.playPopChime();
+
+        if (this.isRecording && this.recognition) {
+          this.recognition.stop();
+        }
+
+        let condition = null;
+        if (this.selectedPresetConditionKey && CONDITIONS[this.selectedPresetConditionKey]) {
+          condition = CONDITIONS[this.selectedPresetConditionKey];
+        } else {
+          condition = this.classifyText(text);
+        }
+        this.currentCondition = condition;
+
+        this.renderScreen2(condition, text);
+        this.renderScreen3(condition, text);
+
+        this.saveSessionToVault(text, condition);
+        this.goToScreen(2);
+      }
+
+      classifyText(text) {
+        const lower = text.toLowerCase();
+
+        const categories = {
+          sports: [
+            'soccer', 'football', 'badminton', 'match', 'tournament', 'game', 'missed chance',
+            'missed kick', 'penalty', 'court', 'coach', 'championship', 'finals', 'teammate',
+            'teammates', 'lost the game', 'lost the match', 'locker room', 'score', 'crushed',
+            'striker', 'defense', 'athletic', 'workout', 'gym', 'sprint', 'run'
+          ],
+          startup: [
+            'startup', 'business', 'investor', 'demo', 'pitch', 'pitching', 'client', 'churn',
+            'hackathon', 'founder', 'app', 'code', 'deploy', 'deployment', 'launch', 'dotta',
+            'revenue', 'saas', 'funding', 'users', 'submission', 'deadline', 'bugs', 'bug',
+            'valuation', 'runway', 'burn rate'
+          ],
+          academic: [
+            'exam', 'exams', 'marks', 'math', 'maths', 'applied maths', 'study', 'studying',
+            'syllabus', 'test', 'behind', 'semester', 'grade', 'grades', 'cgpa', 'gpa',
+            'backlog', 'assignment', 'college', 'university', 'professor', 'class', 'fail',
+            'failing', 'lecture'
+          ],
+          brainfog: [
+            'dimaag kharab', 'fog', 'burnout', 'burned out', 'exhausted', 'sab bekaar',
+            'overwhelmed', 'fever', 'sick', 'pathetic', 'kuch samajh', 'headache',
+            'tired', 'scattered', 'blank', 'numb', 'drained', 'heavy', 'spinning', 'too much'
+          ],
+          crossroads: [
+            'choice', 'decide', 'decision', 'crossroads', 'option a', 'option b',
+            'paralyzed', 'dilemma', 'two paths', 'path', 'offer', 'job offer',
+            'quit', 'stay', 'which one', 'stuck between', 'pros and cons'
+          ],
+          relationship: [
+            'girlfriend', 'boyfriend', 'breakup', 'broke up', 'crush', 'argument',
+            'ignored', 'texted', 'hurt', 'relationship', 'dating', 'cheated',
+            'partner', 'friend', 'argued', 'screaming', 'yelled', 'apologize',
+            'talking to me', 'ghosted', 'ex', 'love'
+          ]
+        };
+
+        const scores = { sports: 0, startup: 0, academic: 0, brainfog: 0, crossroads: 0, relationship: 0 };
+        for (const [cat, words] of Object.entries(categories)) {
+          for (const w of words) {
+            const escaped = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const re = new RegExp('\\b' + escaped + '\\b', 'i');
+            if (re.test(lower)) {
+              // High-weight anchor words get 3 points
+              scores[cat] += (w === 'crushed' || w === 'soccer' || w === 'match' || w === 'finals' || w === 'pitch' || w === 'exam' || w === 'breakup' ? 3 : 1);
+            }
+          }
+        }
+
+        let bestCat = 'relationship';
+        let maxScore = 0;
+        for (const [cat, score] of Object.entries(scores)) {
+          if (score > maxScore) {
+            maxScore = score;
+            bestCat = cat;
+          }
+        }
+
+        if (maxScore > 0 && CONDITIONS[bestCat]) {
+          return CONDITIONS[bestCat];
+        }
+        return CONDITIONS.relationship;
+      }
+
+      // --- SCREEN 2 RENDERING (NO TRUNCATION, SIMPLE HUMAN LABELS!) ---
+      renderScreen2(cond, text) {
+        const condTag = document.getElementById('conditionTag');
+        if (condTag) condTag.innerText = `Condition: ${cond.tag}`;
+
+        const domBadge = document.getElementById('emotionDominantBadge');
+        if (domBadge) domBadge.innerText = cond.dominantBadge;
+
+        // 1. VERTICAL COLUMN BAR CHART (NO TRUNCATION, BOLD LABELS!)
+        const barsContainer = document.getElementById('dynamicEmotionBars');
+        if (barsContainer) {
+          barsContainer.innerHTML = cond.breakdown.map(item => `
+            <div class="flex-1 min-w-[70px] sm:min-w-[100px] flex flex-col items-center h-full justify-end group">
+              <!-- Percentage badge on top -->
+              <span class="text-sm sm:text-base md:text-lg font-extrabold ${item.textColor} mb-2 tracking-tight transition-transform group-hover:scale-110 drop-shadow">${item.pct}%</span>
+              <!-- Column Track -->
+              <div class="w-full h-full max-h-[145px] sm:max-h-[160px] flex items-end bg-black/40 rounded-t-xl overflow-hidden p-1.5 border border-white/20">
+                <div class="w-full rounded-t-lg bg-gradient-to-t ${item.gradient} transition-all duration-1000 ease-out shadow-2xl"
+                     style="height: ${item.pct}%; box-shadow: 0 0 20px currentColor;">
+                </div>
+              </div>
+              <!-- Emotion label underneath (NO TRUNCATION!) -->
+              <div class="text-center mt-2.5 w-full">
+                <p class="text-xs sm:text-sm md:text-base font-bold text-white leading-tight">${item.label}</p>
+                <p class="text-[11px] sm:text-xs font-semibold text-beigeLight leading-tight mt-0.5">${item.sub}</p>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // 2. Concise Analytical Insight Box
+        const insightBox = document.getElementById('dynamicInsightBox');
+        if (insightBox) {
+          insightBox.innerHTML = `
+            <div class="flex items-start gap-3">
+              <span class="text-butter font-bold text-lg leading-none">●</span>
+              <p class="leading-relaxed text-white font-medium font-sans">
+                <strong class="text-butter font-bold">Analytical Assessment:</strong> ${cond.insight}
+              </p>
+            </div>
+          `;
+        }
+
+        // 3. Grounding Truth Facts
+        const factsContainer = document.getElementById('dynamicGroundingFacts');
+        if (factsContainer) {
+          factsContainer.innerHTML = cond.grounding.map(fact => `
+            <div class="p-3 bg-black/40 rounded-xl border border-white/15 flex items-start gap-2.5 text-xs sm:text-sm text-white font-medium">
+              <span class="text-butter font-bold mt-0.5">⚓</span>
+              <p class="leading-relaxed font-sans">${fact}</p>
+            </div>
+          `).join('');
+        }
+
+        // 4. Overthinking Loops
+        this.poppedCount = 0;
+        this.totalBubbles = cond.traps.length;
+        const loopsContainer = document.getElementById('thoughtLoopsContainer');
+        if (loopsContainer) {
+          loopsContainer.innerHTML = cond.traps.map((trap, idx) => `
+            <div id="bubbleNode${idx}" onclick="window.app.popBubble(${idx}, event)"
+                 class="p-4 bg-black/45 hover:bg-black/60 border border-white/20 hover:border-butter rounded-xl flex items-start justify-between gap-3 group transition cursor-pointer">
+              <div class="space-y-1 text-left flex-1 min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold text-butter">LOOP // 0${idx + 1}</span>
+                  <span class="text-xs sm:text-sm font-bold text-white group-hover:text-butter transition" id="bubbleTitle${idx}">${trap}</span>
+                </div>
+                <p class="text-xs text-white/70 leading-relaxed font-sans">Tap to strike out and clear this unexamined cognitive trap.</p>
+              </div>
+              <div class="w-7 h-7 border border-white/30 rounded-lg bg-black/40 flex items-center justify-center text-white/80 group-hover:text-butter group-hover:border-butter transition flex-shrink-0 mt-0.5 text-xs font-bold">
+                ✕
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // Reset Counter & Banners
+        const counter = document.getElementById('headspaceCounter');
+        if (counter) counter.innerText = `Cleared: 0 / ${this.totalBubbles}`;
+
+        const celebration = document.getElementById('clearedCelebrationBanner');
+        if (celebration) celebration.classList.add('hidden');
+
+        const arenaBanner = document.getElementById('arenaLaunchBanner');
+        if (arenaBanner) arenaBanner.style.display = 'flex';
+
+        // 5. In Your Control vs Let Go Sorter (FIXED CONTRAST & COLORS!)
+        const controlList = document.getElementById('inControlList');
+        if (controlList) {
+          controlList.innerHTML = cond.inControl.map(item => `
+            <div class="p-3 bg-[#031614] rounded-lg border border-[#E6CCB2]/70 text-xs sm:text-sm text-[#FFF8EE] font-medium flex items-start gap-2 shadow-sm font-sans">
+              <span class="text-butter font-bold text-sm">✓</span>
+              <span>${item}</span>
+            </div>
+          `).join('');
+        }
+
+        const letGoList = document.getElementById('letGoList');
+        if (letGoList) {
+          letGoList.innerHTML = cond.letGo.map(item => `
+            <div class="p-3 bg-[#2D0C10] rounded-lg border border-[#F87171]/70 text-xs sm:text-sm text-[#FFB4B4] font-medium flex items-start gap-2 shadow-sm font-sans">
+              <span class="text-rose-400 font-bold text-sm">✕</span>
+              <span>${item}</span>
+            </div>
+          `).join('');
+        }
+
+        if (window.lucide) window.lucide.createIcons();
+      }
+
+      // Pop Loop Handler
+      popBubble(idx, event) {
+        const el = document.getElementById(`bubbleNode${idx}`);
+        const titleEl = document.getElementById(`bubbleTitle${idx}`);
+        if (!el || el.classList.contains('popped')) return;
+
+        if (titleEl) {
+          titleEl.style.textDecoration = 'line-through';
+          titleEl.style.opacity = '0.5';
+        }
+
+        this.sound.playPopChime();
+        this.poppedCount++;
+
+        let x = window.innerWidth / 2;
+        let y = window.innerHeight / 2;
+        if (event && event.clientX) {
+          x = event.clientX;
+          y = event.clientY;
+        }
+        this.particles.burst(x, y, '#FFF5B8', 45);
+
+        // Instant 0ms collapse transition (140ms smooth display:none)
+        el.style.transition = 'all 0.14s ease-out';
+        el.style.opacity = '0';
+        el.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          el.classList.add('popped');
+          el.style.display = 'none';
+        }, 140);
+
+        const counter = document.getElementById('headspaceCounter');
+        if (counter) counter.innerText = `Cleared: ${this.poppedCount} / ${this.totalBubbles}`;
+
+        // When all 3 are popped: immediately reveal celebration and hide arena banner (0ms delay)
+        if (this.poppedCount >= this.totalBubbles) {
+          this.sound.playCelebrationChime();
+          this.particles.celebrate();
+
+          const celebration = document.getElementById('clearedCelebrationBanner');
+          if (celebration) celebration.classList.remove('hidden');
+
+          const arenaBanner = document.getElementById('arenaLaunchBanner');
+          if (arenaBanner) arenaBanner.style.display = 'none';
+
+          this.showToast("All cognitive loops cleared! Great job.");
+        }
+      }
+
+      popAllThoughtBubbles() {
+        for (let i = 0; i < this.totalBubbles; i++) {
+          setTimeout(() => {
+            const el = document.getElementById(`bubbleNode${i}`);
+            if (el && !el.classList.contains('popped')) {
+              const rect = el.getBoundingClientRect();
+              this.popBubble(i, { clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2 });
+            }
+          }, i * 150);
+        }
+      }
+
+      resetOverthinkingBubbles() {
+        if (!this.currentCondition) return;
+        this.renderScreen2(this.currentCondition, '');
+        this.sound.playSoftClick();
+        this.showToast("Loops reset for review.");
+      }
+
+      // --- SCREEN 3 RENDERING (TOP COIN FLIP + SMART DRAFTER!) ---
+      renderScreen3(cond, text) {
+        const container = document.getElementById('dynamicActionToolkitContainer');
+        if (!container) return;
+
+        this.resetFocusTimer();
+
+        // 1. Situation A: Relationship -> Smart Message Drafter + Checklist
+        if (cond.type === 'relationship') {
+          container.innerHTML = `
+            <div class="glass-card p-4 sm:p-5 md:p-6 space-y-5">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#EED9C4]/20 pb-4">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-2xl">💬</span>
+                  <div>
+                    <h3 class="text-lg sm:text-xl font-bold text-white">Smart Communication Drafter</h3>
+                    <p class="text-xs sm:text-sm text-white/80 font-medium">De-escalates tension and communicates boundaries with zero second-guessing.</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button onclick="window.app.openCoinFlipModal()" class="px-3.5 py-1.5 rounded-xl bg-butter text-tealDeep font-bold text-xs sm:text-sm flex items-center gap-1.5 hover:bg-butterHover transition cursor-pointer shadow-md">
+                    <span>🪙 Gut-Check Coin Flip</span>
+                  </button>
+                  <span class="text-xs font-bold px-3 py-1 rounded-full bg-[#EED9C4]/20 text-[#F5E6D3] border border-[#EED9C4]">Ready to Send</span>
+                </div>
+              </div>
+
+              <!-- 3 Ready-to-Copy Script Cards -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                ${cond.drafts.map((d, idx) => `
+                  <div class="p-4 rounded-xl bg-black/45 border border-white/20 flex flex-col justify-between space-y-3.5">
+                    <div class="space-y-1.5 text-left">
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs sm:text-sm font-bold text-butter">${d.title}</span>
+                        <span class="text-[10px] text-beigeLight bg-white/10 px-2 py-0.5 rounded font-semibold">${d.badge}</span>
+                      </div>
+                      <p class="text-xs sm:text-sm text-white/95 leading-relaxed font-sans pt-1 font-medium">"${d.text}"</p>
+                    </div>
+                    <button onclick="window.app.copyDrafterMessage(this, '${this.escapeQuotes(d.text)}')" class="w-full py-2 rounded-lg btn-beige hover:bg-butter hover:text-tealDeep text-xs font-bold transition cursor-pointer">
+                      Copy Script
+                    </button>
+                  </div>
+                `).join('')}
+              </div>
+
+              <!-- De-escalation Checklist & Focus Timer -->
+              <div class="pt-2 border-t border-[#EED9C4]/20 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h4 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                    <i data-lucide="check-square" class="w-4 h-4 text-butter"></i> 15-Minute De-escalation Protocol
+                  </h4>
+                  <div class="flex items-center gap-2">
+                    <span id="focusTimerDisplay" class="font-mono text-sm sm:text-base font-bold text-butter bg-black/50 px-3 py-1 rounded-lg border border-white/20">15:00</span>
+                    <button id="focusTimerBtn" onclick="window.app.toggleFocusTimer()" class="px-3 py-1 rounded-lg bg-butter text-tealDeep text-xs sm:text-sm font-bold cursor-pointer">Start</button>
+                  </div>
+                </div>
+
+                <div class="space-y-2" id="microChecklistList">
+                  ${cond.blueprintSteps.map((step, idx) => `
+                    <button onclick="window.app.toggleChecklistStep(${idx})" id="cStep${idx}" class="w-full text-left p-3 bg-black/40 hover:bg-black/60 border border-white/15 rounded-xl flex items-center justify-between gap-3 transition cursor-pointer">
+                      <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold text-butter bg-black/50 border border-white/20 px-2.5 py-1 rounded-md">${step.duration}</span>
+                        <span class="text-xs sm:text-sm text-white font-medium font-sans">${step.label}</span>
+                      </div>
+                      <span id="cIcon${idx}" class="text-xs font-bold text-white/60">[ ]</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        // 2. Situation B: Sports Loss -> Athlete's Mentality Playbook & Mantras (NO TEXTING SCRIPTS!)
+        else if (cond.type === 'sports') {
+          container.innerHTML = `
+            <div class="glass-card p-4 sm:p-5 md:p-6 space-y-5">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#EED9C4]/20 pb-4">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-2xl">🏆</span>
+                  <div>
+                    <h3 class="text-lg sm:text-xl font-bold text-white">The Athlete's Post-Match Mentality Playbook</h3>
+                    <p class="text-xs sm:text-sm text-white/80 font-medium">World-class competitors separate emotional heartbreak from tactical adjustment.</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button onclick="window.app.openCoinFlipModal()" class="px-3.5 py-1.5 rounded-xl bg-butter text-tealDeep font-bold text-xs sm:text-sm flex items-center gap-1.5 hover:bg-butterHover transition cursor-pointer shadow-md">
+                    <span>🪙 Gut-Check Coin Flip</span>
+                  </button>
+                  <span class="text-xs font-bold px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40">Champion's Reset</span>
+                </div>
+              </div>
+
+              <!-- 3 Locker-Room Mantra Cards -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                ${cond.mantras.map(m => `
+                  <div class="p-4 rounded-xl bg-black/45 border border-white/20 flex flex-col justify-between space-y-2 text-left">
+                    <span class="text-[11px] text-amber-300 font-bold tracking-wider">${m.badge}</span>
+                    <h4 class="text-xs sm:text-sm font-bold text-butter">${m.title}</h4>
+                    <p class="text-xs sm:text-sm text-white/95 leading-relaxed font-sans italic font-medium">"${m.text}"</p>
+                  </div>
+                `).join('')}
+              </div>
+
+              <!-- 3 Concrete Recovery Steps -->
+              <div class="pt-2 border-t border-[#EED9C4]/20 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h4 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                    <i data-lucide="check-square" class="w-4 h-4 text-butter"></i> Post-Game Recovery Protocol (Next 15 Minutes)
+                  </h4>
+                  <div class="flex items-center gap-2">
+                    <span id="focusTimerDisplay" class="font-mono text-sm sm:text-base font-bold text-butter bg-black/50 px-3 py-1 rounded-lg border border-white/20">15:00</span>
+                    <button id="focusTimerBtn" onclick="window.app.toggleFocusTimer()" class="px-3 py-1 rounded-lg bg-butter text-tealDeep text-xs sm:text-sm font-bold cursor-pointer">Start</button>
+                  </div>
+                </div>
+
+                <div class="space-y-2" id="microChecklistList">
+                  ${cond.blueprintSteps.map((step, idx) => `
+                    <button onclick="window.app.toggleChecklistStep(${idx})" id="cStep${idx}" class="w-full text-left p-3 bg-black/40 hover:bg-black/60 border border-white/15 rounded-xl flex items-center justify-between gap-3 transition cursor-pointer">
+                      <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold text-butter bg-black/50 border border-white/20 px-2.5 py-1 rounded-md">${step.duration}</span>
+                        <span class="text-xs sm:text-sm text-white font-medium font-sans">${step.label}</span>
+                      </div>
+                      <span id="cIcon${idx}" class="text-xs font-bold text-white/60">[ ]</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        // 3. Situation C: Startup / Project -> Founder's Triage & Builder's Manifesto
+        else if (cond.type === 'startup') {
+          container.innerHTML = `
+            <div class="glass-card p-4 sm:p-5 md:p-6 space-y-5">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#EED9C4]/20 pb-4">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-2xl">🚀</span>
+                  <div>
+                    <h3 class="text-lg sm:text-xl font-bold text-white">Founder's Triage & Turnaround Protocol</h3>
+                    <p class="text-xs sm:text-sm text-white/80 font-medium">A product dip is not your identity. Execute the immediate 15-minute fix.</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button onclick="window.app.openCoinFlipModal()" class="px-3.5 py-1.5 rounded-xl bg-butter text-tealDeep font-bold text-xs sm:text-sm flex items-center gap-1.5 hover:bg-butterHover transition cursor-pointer shadow-md">
+                    <span>🪙 Gut-Check Coin Flip</span>
+                  </button>
+                  <span class="text-xs font-bold px-3 py-1 rounded-full bg-peachWarm/20 text-peachWarm border border-peachWarm/40">Builder Mode</span>
+                </div>
+              </div>
+
+              <!-- Builder's Clarity Manifesto -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                ${cond.manifesto.map(m => `
+                  <div class="p-4 rounded-xl bg-black/45 border border-white/20 flex flex-col justify-between space-y-2 text-left">
+                    <span class="text-[11px] text-peachWarm font-bold tracking-wider">${m.badge}</span>
+                    <h4 class="text-xs sm:text-sm font-bold text-butter">${m.title}</h4>
+                    <p class="text-xs sm:text-sm text-white/95 leading-relaxed font-sans font-medium">"${m.text}"</p>
+                  </div>
+                `).join('')}
+              </div>
+
+              <!-- 15-Minute Triage Checklist & Timer -->
+              <div class="pt-2 border-t border-[#EED9C4]/20 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h4 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                    <i data-lucide="check-square" class="w-4 h-4 text-butter"></i> 15-Minute Shipping Sprint
+                  </h4>
+                  <div class="flex items-center gap-2">
+                    <span id="focusTimerDisplay" class="font-mono text-sm sm:text-base font-bold text-butter bg-black/50 px-3 py-1 rounded-lg border border-white/20">15:00</span>
+                    <button id="focusTimerBtn" onclick="window.app.toggleFocusTimer()" class="px-3 py-1 rounded-lg bg-butter text-tealDeep text-xs sm:text-sm font-bold cursor-pointer">Start</button>
+                  </div>
+                </div>
+
+                <div class="space-y-2" id="microChecklistList">
+                  ${cond.blueprintSteps.map((step, idx) => `
+                    <button onclick="window.app.toggleChecklistStep(${idx})" id="cStep${idx}" class="w-full text-left p-3 bg-black/40 hover:bg-black/60 border border-white/15 rounded-xl flex items-center justify-between gap-3 transition cursor-pointer">
+                      <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold text-butter bg-black/50 border border-white/20 px-2.5 py-1 rounded-md">${step.duration}</span>
+                        <span class="text-xs sm:text-sm text-white font-medium font-sans">${step.label}</span>
+                      </div>
+                      <span id="cIcon${idx}" class="text-xs font-bold text-white/60">[ ]</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        // 4. Default / Academic / Brainfog / Crossroads
+        else {
+          container.innerHTML = `
+            <div class="glass-card p-4 sm:p-5 md:p-6 space-y-5">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#EED9C4]/20 pb-4">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-2xl">⚡</span>
+                  <div>
+                    <h3 class="text-lg sm:text-xl font-bold text-white">Action Toolkit: 15-Minute Sprint</h3>
+                    <p class="text-xs sm:text-sm text-white/80 font-medium">Break down overwhelm into 3 bite-sized steps with a live countdown timer.</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <!-- TOP COIN FLIP BUTTON (CRITICAL FIX!) -->
+                  <button onclick="window.app.openCoinFlipModal()" class="px-3.5 py-1.5 rounded-xl bg-butter text-tealDeep font-bold text-xs sm:text-sm flex items-center gap-1.5 hover:bg-butterHover transition cursor-pointer shadow-md">
+                    <span>🪙 Open Gut-Check Coin Flip</span>
+                  </button>
+                  <div class="flex items-center gap-2">
+                    <span id="focusTimerDisplay" class="font-mono text-sm sm:text-base font-bold text-butter bg-black/50 px-3 py-1 rounded-lg border border-white/20">15:00</span>
+                    <button id="focusTimerBtn" onclick="window.app.toggleFocusTimer()" class="px-3 py-1 rounded-lg bg-butter text-tealDeep text-xs sm:text-sm font-bold cursor-pointer">Start</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-2" id="microChecklistList">
+                ${cond.blueprintSteps.map((step, idx) => `
+                  <button onclick="window.app.handleBlueprintStepClick(${idx})" id="cStep${idx}" class="w-full text-left p-3.5 bg-black/40 hover:bg-black/60 border border-white/15 rounded-xl flex items-center justify-between gap-3 transition cursor-pointer">
+                    <div class="flex items-center gap-3">
+                      <span class="text-xs font-bold text-butter bg-black/50 border border-white/20 px-2.5 py-1 rounded-md">${step.duration}</span>
+                      <span class="text-xs sm:text-sm text-white font-medium font-sans">${step.label}</span>
+                    </div>
+                    <span id="cIcon${idx}" class="text-xs font-bold text-white/60">[ ]</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        // Reframe Anchor
+        const reframeEl = document.getElementById('personalReframeText');
+        if (reframeEl) {
+          reframeEl.innerHTML = `<p class="italic text-beigeLight font-serif text-base sm:text-lg leading-relaxed">"${this.escapeHTML(cond.reframe)}"</p>`;
+        }
+
+        // Initialize Time Horizon
+        this.setTimePerspective('tomorrow');
+
+        if (window.lucide) window.lucide.createIcons();
+      }
+
+      handleBlueprintStepClick(idx) {
+        if (!this.currentCondition) return;
+        const step = this.currentCondition.blueprintSteps[idx];
+        if (step && step.label.toLowerCase().includes('coin flip')) {
+          this.openCoinFlipModal();
+        }
+        this.toggleChecklistStep(idx);
+      }
+
+      copyDrafterMessage(btn, text) {
+        navigator.clipboard.writeText(text).then(() => {
+          this.sound.playCelebrationChime();
+          const orig = btn.innerText;
+          btn.innerText = "✓ Copied!";
+          btn.classList.add('bg-butter', 'text-tealDeep');
+          setTimeout(() => {
+            btn.innerText = orig;
+            btn.classList.remove('bg-butter', 'text-tealDeep');
+          }, 2000);
+          this.showToast("Script copied to clipboard.");
+        }).catch(() => {
+          this.showToast("Could not copy script automatically.");
+        });
+      }
+
+      toggleChecklistStep(idx) {
+        this.checklistState[idx] = !this.checklistState[idx];
+        const stepBtn = document.getElementById(`cStep${idx}`);
+        const icon = document.getElementById(`cIcon${idx}`);
+        if (!stepBtn || !icon) return;
+
+        if (this.checklistState[idx]) {
+          this.sound.playPenScratch();
+          stepBtn.classList.add('bg-[#EED9C4]/20', 'border-[#EED9C4]');
+          icon.innerText = "[✓ Done]";
+          icon.classList.add('text-butter', 'font-bold');
+        } else {
+          this.sound.playSoftClick();
+          stepBtn.classList.remove('bg-[#EED9C4]/20', 'border-[#EED9C4]');
+          icon.innerText = "[ ]";
+          icon.classList.remove('text-butter', 'font-bold');
+        }
+      }
+
+      toggleFocusTimer() {
+        const btn = document.getElementById('focusTimerBtn');
+        if (this.isTimerRunning) {
+          clearInterval(this.focusTimerInterval);
+          this.isTimerRunning = false;
+          if (btn) btn.innerText = "Resume";
+          this.sound.playSoftClick();
+        } else {
+          this.isTimerRunning = true;
+          if (btn) btn.innerText = "Pause";
+          this.sound.playPopChime();
+          this.focusTimerInterval = setInterval(() => {
+            this.focusTimerSeconds--;
+            if (this.focusTimerSeconds <= 0) {
+              clearInterval(this.focusTimerInterval);
+              this.isTimerRunning = false;
+              if (btn) btn.innerText = "Done!";
+              this.sound.playCelebrationChime();
+              this.particles.celebrate();
+              this.showToast("15-minute focus block complete! Breathe and stretch.");
+            }
+            this.updateTimerDisplay();
+          }, 1000);
+        }
+      }
+
+      resetFocusTimer() {
+        if (this.focusTimerInterval) clearInterval(this.focusTimerInterval);
+        this.isTimerRunning = false;
+        this.focusTimerSeconds = 900;
+        this.updateTimerDisplay();
+        const btn = document.getElementById('focusTimerBtn');
+        if (btn) btn.innerText = "Start";
+      }
+
+      updateTimerDisplay() {
+        const display = document.getElementById('focusTimerDisplay');
+        if (!display) return;
+        const mins = Math.floor(this.focusTimerSeconds / 60);
+        const secs = this.focusTimerSeconds % 60;
+        display.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }
+
+      copyPersonalReframe() {
+        if (!this.currentCondition) return;
+        navigator.clipboard.writeText(this.currentCondition.reframe).then(() => {
+          this.sound.playPopChime();
+          this.showToast("Anchor copied to clipboard.");
+        });
+      }
+
+      setTimePerspective(period) {
+        this.activeHorizon = period;
+        const btnT = document.getElementById('hBtnTomorrow');
+        const btnM = document.getElementById('hBtnNextMonth');
+        const btnY = document.getElementById('hBtnNextYear');
+        const bar = document.getElementById('perspectiveProgressBar');
+        const pct = document.getElementById('perspectiveGravityPct');
+        const textEl = document.getElementById('perspectiveText');
+
+        if (!this.currentCondition || !this.currentCondition.perspectives) return;
+
+        [btnT, btnM, btnY].forEach(b => {
+          if (b) {
+            b.classList.remove('bg-butter', 'text-tealDeep', 'font-bold');
+            b.classList.add('text-white/80', 'font-medium');
+          }
+        });
+
+        if (period === 'tomorrow') {
+          if (btnT) {
+            btnT.classList.add('bg-butter', 'text-tealDeep', 'font-bold');
+            btnT.classList.remove('text-white/80', 'font-medium');
+          }
+          if (bar) bar.style.width = '80%';
+          if (pct) pct.innerText = '80%';
+          if (textEl) textEl.innerText = this.currentCondition.perspectives.tomorrow;
+        } else if (period === 'nextMonth') {
+          if (btnM) {
+            btnM.classList.add('bg-butter', 'text-tealDeep', 'font-bold');
+            btnM.classList.remove('text-white/80', 'font-medium');
+          }
+          if (bar) bar.style.width = '20%';
+          if (pct) pct.innerText = '20%';
+          if (textEl) textEl.innerText = this.currentCondition.perspectives.nextMonth;
+        } else if (period === 'nextYear') {
+          if (btnY) {
+            btnY.classList.add('bg-butter', 'text-tealDeep', 'font-bold');
+            btnY.classList.remove('text-white/80', 'font-medium');
+          }
+          if (bar) bar.style.width = '5%';
+          if (pct) pct.innerText = '5%';
+          if (textEl) textEl.innerText = this.currentCondition.perspectives.nextYear;
+        }
+      }
+
+      // --- FULL-SCREEN FLOATING SOAP BUBBLE ARENA ---
+      openFloatingArena() {
+        this.sound.playSoftClick();
+        const modal = document.getElementById('floatingArenaModal');
+        if (modal) modal.classList.remove('hidden');
+        this.initArenaPhysics();
+      }
+
+      closeFloatingArena() {
+        const modal = document.getElementById('floatingArenaModal');
+        if (modal) modal.classList.add('hidden');
+        if (this.arenaAnimId) cancelAnimationFrame(this.arenaAnimId);
+      }
+
+      initArenaPhysics() {
+        const canvas = document.getElementById('arenaCanvas');
+        if (!canvas) return;
+        this.arenaCanvas = canvas;
+        this.arenaCtx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const labels = this.currentCondition ? this.currentCondition.traps : [
+          "Looming deadline panic", "Impostor syndrome thoughts", "Fear of making the wrong choice"
+        ];
+
+        this.arenaBubbles = labels.map((label, idx) => ({
+          x: canvas.width * 0.25 + (idx * canvas.width * 0.25),
+          y: canvas.height * 0.4 + (Math.random() * 80),
+          radius: 70,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 1.5,
+          label: label,
+          popped: false
+        }));
+
+        canvas.onpointerdown = (e) => {
+          const rect = canvas.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+          const clickY = e.clientY - rect.top;
+
+          this.arenaBubbles.forEach((b, idx) => {
+            if (b.popped) return;
+            const dist = Math.hypot(clickX - b.x, clickY - b.y);
+            if (dist <= b.radius + 20) {
+              b.popped = true;
+              this.sound.playPopChime();
+              this.particles.burst(e.clientX, e.clientY, '#FFF5B8', 55);
+              this.showToast("Bubble popped into water droplets!");
+
+              // Sync popped state with Screen 2 loop card
+              this.popBubble(idx, { clientX: e.clientX, clientY: e.clientY });
+
+              const allPopped = this.arenaBubbles.every(bubble => bubble.popped);
+              if (allPopped) {
+                setTimeout(() => {
+                  this.closeFloatingArena();
+                }, 600);
+              }
+            }
+          });
+        };
+
+        const loop = () => {
+          if (!this.arenaCtx) return;
+          this.arenaCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+          this.arenaBubbles.forEach(b => {
+            if (b.popped) return;
+
+            b.x += b.vx;
+            b.y += b.vy;
+
+            if (b.x - b.radius < 10 || b.x + b.radius > canvas.width - 10) b.vx *= -1;
+            if (b.y - b.radius < 10 || b.y + b.radius > canvas.height - 10) b.vy *= -1;
+
+            this.arenaCtx.save();
+            const grad = this.arenaCtx.createRadialGradient(b.x - 20, b.y - 20, 5, b.x, b.y, b.radius);
+            grad.addColorStop(0, 'rgba(255, 245, 184, 0.45)');
+            grad.addColorStop(0.7, 'rgba(253, 186, 116, 0.25)');
+            grad.addColorStop(1, 'rgba(245, 230, 211, 0.55)');
+
+            this.arenaCtx.fillStyle = grad;
+            this.arenaCtx.beginPath();
+            this.arenaCtx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+            this.arenaCtx.fill();
+
+            this.arenaCtx.strokeStyle = 'rgba(255, 245, 184, 0.7)';
+            this.arenaCtx.lineWidth = 2.5;
+            this.arenaCtx.stroke();
+
+            this.arenaCtx.fillStyle = '#FFFFFF';
+            this.arenaCtx.font = 'bold 12px Plus Jakarta Sans, sans-serif';
+            this.arenaCtx.textAlign = 'center';
+            this.arenaCtx.textBaseline = 'middle';
+            this.wrapText(this.arenaCtx, b.label, b.x, b.y - 8, b.radius * 1.5, 15);
+
+            this.arenaCtx.restore();
+          });
+
+          this.arenaAnimId = requestAnimationFrame(loop);
+        };
+
+        if (this.arenaAnimId) cancelAnimationFrame(this.arenaAnimId);
+        this.arenaAnimId = requestAnimationFrame(loop);
+      }
+
+      wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        const lines = [];
+
+        for (let n = 0; n < words.length; n++) {
+          const testLine = line + words[n] + ' ';
+          const metrics = ctx.measureText(testLine);
+          if (metrics.width > maxWidth && n > 0) {
+            lines.push(line);
+            line = words[n] + ' ';
+          } else {
+            line = testLine;
+          }
+        }
+        lines.push(line);
+
+        const startY = y - ((lines.length - 1) * lineHeight) / 2;
+        lines.forEach((l, i) => {
+          ctx.fillText(l.trim(), x, startY + i * lineHeight);
+        });
+      }
+
+      // --- 4-7-8 GUIDED BREATHING SANCTUARY ---
+      openBreathingSanctuary() {
+        this.sound.playSoftClick();
+        const modal = document.getElementById('breathingSanctuaryModal');
+        if (modal) modal.classList.remove('hidden');
+        this.breathingActive = true;
+        this.runBreathingCycle();
+      }
+
+      closeBreathingSanctuary() {
+        const modal = document.getElementById('breathingSanctuaryModal');
+        if (modal) modal.classList.add('hidden');
+        this.breathingActive = false;
+        if (this.breathingInterval) clearInterval(this.breathingInterval);
+      }
+
+      runBreathingCycle() {
+        const ring = document.getElementById('breathingRing');
+        const inner = document.getElementById('breathingInner');
+        const phase = document.getElementById('breathingPhase');
+        const timer = document.getElementById('breathingTimer');
+        const instruction = document.getElementById('breathingInstruction');
+
+        let secondsLeft = 4;
+        let currentStep = 'inhale';
+
+        const updateVisuals = () => {
+          if (!this.breathingActive) return;
+
+          if (currentStep === 'inhale') {
+            if (phase) phase.innerText = 'Inhale';
+            if (instruction) instruction.innerText = 'Breathe in smoothly through your nose...';
+            if (ring) ring.style.transform = 'scale(1.25)';
+            if (inner) inner.style.transform = 'scale(1.15)';
+          } else if (currentStep === 'hold') {
+            if (phase) phase.innerText = 'Hold';
+            if (instruction) instruction.innerText = 'Hold your breath gently; stay calm...';
+            if (ring) ring.style.transform = 'scale(1.25)';
+            if (inner) inner.style.transform = 'scale(1.15)';
+          } else if (currentStep === 'exhale') {
+            if (phase) phase.innerText = 'Exhale';
+            if (instruction) instruction.innerText = 'Exhale slowly through your mouth...';
+            if (ring) ring.style.transform = 'scale(0.9)';
+            if (inner) inner.style.transform = 'scale(0.85)';
+          }
+          if (timer) timer.innerText = secondsLeft;
+        };
+
+        updateVisuals();
+
+        if (this.breathingInterval) clearInterval(this.breathingInterval);
+        this.breathingInterval = setInterval(() => {
+          if (!this.breathingActive) {
+            clearInterval(this.breathingInterval);
+            return;
+          }
+
+          secondsLeft--;
+          if (secondsLeft <= 0) {
+            if (currentStep === 'inhale') {
+              currentStep = 'hold';
+              secondsLeft = 7;
+            } else if (currentStep === 'hold') {
+              currentStep = 'exhale';
+              secondsLeft = 8;
+            } else {
+              currentStep = 'inhale';
+              secondsLeft = 4;
+            }
+          }
+          updateVisuals();
+        }, 1000);
+      }
+
+      // --- TIE-BREAKER COIN FLIP ---
+      openCoinFlipModal() {
+        this.sound.playSoftClick();
+        const modal = document.getElementById('coinFlipModal');
+        if (modal) modal.classList.remove('hidden');
+      }
+
+      closeCoinFlipModal() {
+        const modal = document.getElementById('coinFlipModal');
+        if (modal) modal.classList.add('hidden');
+      }
+
+      flipCoin() {
+        const optA = document.getElementById('coinOptionA')?.value.trim() || 'Option A';
+        const optB = document.getElementById('coinOptionB')?.value.trim() || 'Option B';
+        const coin = document.getElementById('coinVisual');
+        const resultText = document.getElementById('coinResultText');
+        const btn = document.getElementById('coinFlipBtn');
+
+        if (btn) btn.disabled = true;
+        if (resultText) resultText.innerText = "Flipping...";
+
+        this.sound.playCoinSpin();
+
+        if (coin) {
+          coin.style.transform = 'rotateY(1440deg) scale(1.15)';
+        }
+
+        setTimeout(() => {
+          const isHeads = Math.random() > 0.5;
+          const chosen = isHeads ? optA : optB;
+          if (coin) {
+            coin.innerText = isHeads ? 'H' : 'T';
+            coin.style.transform = 'rotateY(0deg) scale(1)';
+          }
+          this.sound.playCoinLand();
+          if (resultText) {
+            resultText.innerHTML = `Landed on: <strong class="text-butter text-base">${chosen}</strong><br><span class="text-xs text-white/70 font-sans">Did you feel relief or regret? That tells you your real choice.</span>`;
+          }
+          if (btn) btn.disabled = false;
+        }, 1000);
+      }
+
+      // --- MODALS ---
+      openWhyModal() {
+        this.sound.playSoftClick();
+        const modal = document.getElementById('whyModal');
+        if (modal) modal.classList.remove('hidden');
+      }
+      closeWhyModal() {
+        const modal = document.getElementById('whyModal');
+        if (modal) modal.classList.add('hidden');
+      }
+
+      openTourModal() {
+        this.sound.playSoftClick();
+        const modal = document.getElementById('tourModal');
+        if (modal) modal.classList.remove('hidden');
+      }
+      closeTourModal() {
+        const modal = document.getElementById('tourModal');
+        if (modal) modal.classList.add('hidden');
+      }
+
+      showContextHelp(topic) {
+        this.sound.playSoftClick();
+        const modal = document.getElementById('contextHelpModal');
+        const title = document.getElementById('helpModalTitle');
+        const body = document.getElementById('helpModalBody');
+
+        const explanations = {
+          rawThought: {
+            title: "Why Free-Form Venting Works",
+            body: "Cognitive science shows that holding chaotic thoughts in working memory consumes prefrontal cortex bandwidth. When you write or speak them without self-editing, your brain shifts from emotional threat reaction into executive analysis."
+          },
+          controlSorter: {
+            title: "Why Separating Control Matters",
+            body: "Over 80% of acute stress comes from attempting to mentally control external variables (what others think, past scores, future outcomes). Slicing reality into actionable items vs. release items immediately drops cortisol."
+          },
+          timeHorizon: {
+            title: "Why Perspective Calibrates Stress",
+            body: "Under stress, the brain exaggerates the permanent consequences of today's crisis. Calibrating how much this will matter in 1 month vs. 1 year grounds your nervous system in objective reality."
+          }
+        };
+
+        const item = explanations[topic] || {
+          title: "How This Helps",
+          body: "Untangle uses evidence-based cognitive reframing to quiet cognitive noise and find rational action."
+        };
+
+        if (title) title.innerText = item.title;
+        if (body) body.innerText = item.body;
+        if (modal) modal.classList.remove('hidden');
+      }
+
+      closeContextHelp() {
+        const modal = document.getElementById('contextHelpModal');
+        if (modal) modal.classList.add('hidden');
+      }
+
+      showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.innerText = msg;
+        toast.style.opacity = '1';
+        setTimeout(() => {
+          toast.style.opacity = '0';
+        }, 2500);
+      }
+
+      // --- NAVIGATION & STEP CONTROLS ---
+      goToScreen(screenNum) {
+        this.sound.playSoftClick();
+        this.currentScreen = screenNum;
+
+        const s1 = document.getElementById('screen1');
+        const s2 = document.getElementById('screen2');
+        const s3 = document.getElementById('screen3');
+
+        if (s1) s1.classList.add('hidden');
+        if (s2) s2.classList.add('hidden');
+        if (s3) s3.classList.add('hidden');
+
+        if (screenNum === 1 && s1) s1.classList.remove('hidden');
+        if (screenNum === 2 && s2) s2.classList.remove('hidden');
+        if (screenNum === 3 && s3) s3.classList.remove('hidden');
+
+        [1, 2, 3].forEach(num => {
+          const navBtn = document.getElementById(`stepNav${num}`);
+          if (navBtn) {
+            if (num === screenNum) {
+              navBtn.classList.add('text-tealDeep', 'bg-butter', 'font-bold');
+              navBtn.classList.remove('text-white/80', 'font-medium');
+            } else {
+              navBtn.classList.remove('text-tealDeep', 'bg-butter', 'font-bold');
+              navBtn.classList.add('text-white/80', 'font-medium');
+            }
+          }
+
+          const mobBtn = document.getElementById(`mobStepNav${num}`);
+          if (mobBtn) {
+            if (num === screenNum) {
+              mobBtn.classList.add('text-tealDeep', 'bg-butter', 'font-bold');
+              mobBtn.classList.remove('text-white/80', 'font-medium');
+            } else {
+              mobBtn.classList.remove('text-tealDeep', 'bg-butter', 'font-bold');
+              mobBtn.classList.add('text-white/80', 'font-medium');
+            }
+          }
+        });
+
+        setTimeout(() => this.initScrollObserver(), 60);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      handleStepNav(stepNum) {
+        if (stepNum > 1 && !this.currentCondition) {
+          this.showToast("Please vent your thought and click Untangle first.");
+          return;
+        }
+        this.goToScreen(stepNum);
+      }
+
+      // --- SIDEBAR VAULT & SESSIONS ---
+      toggleSidebar() {
+        this.sound.playSoftClick();
+        const drawer = document.getElementById('historyDrawer');
+        const backdrop = document.getElementById('historyDrawerBackdrop');
+        if (!drawer) return;
+
+        const isOpen = !drawer.classList.contains('-translate-x-full');
+        if (isOpen) {
+          drawer.classList.add('-translate-x-full');
+          if (backdrop) backdrop.classList.add('hidden');
+        } else {
+          this.renderHistoryList();
+          drawer.classList.remove('-translate-x-full');
+          if (backdrop) backdrop.classList.remove('hidden');
+        }
+      }
+
+      startNewSessionFromSidebar() {
+        this.toggleSidebar();
+        this.startFresh();
+      }
+
+      saveSessionToVault(text, cond) {
+        try {
+          const sessions = JSON.parse(localStorage.getItem('untangle_sessions') || '[]');
+          sessions.unshift({
+            timestamp: Date.now(),
+            dateStr: new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+            tag: cond.tag,
+            textSnippet: text.substring(0, 100) + (text.length > 100 ? '...' : ''),
+            fullText: text
+          });
+          if (sessions.length > 25) sessions.pop();
+          localStorage.setItem('untangle_sessions', JSON.stringify(sessions));
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      initScrollObserver() {
+        if (!('IntersectionObserver' in window)) {
+          document.querySelectorAll('.cobble-scroll-card').forEach(el => el.classList.add('revealed'));
+          return;
+        }
+        if (this.scrollObserver) {
+          this.scrollObserver.disconnect();
+        }
+        this.scrollObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+            }
+          });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.cobble-scroll-card').forEach(el => this.scrollObserver.observe(el));
+      }
+
+      renderHistoryList() {
+        const container = document.getElementById('historyListContainer');
+        if (!container) return;
+
+        try {
+          const sessions = JSON.parse(localStorage.getItem('untangle_sessions') || '[]');
+          if (sessions.length === 0) {
+            container.innerHTML = `
+              <div class="text-center py-12 text-xs text-white/50">
+                <p>No archived sessions yet.</p>
+                <p class="mt-1">Untangle your first thought to save it privately.</p>
+              </div>
+            `;
+            return;
+          }
+
+          container.innerHTML = sessions.map(s => `
+            <div onclick="window.app.loadSession(${s.timestamp})" class="p-3.5 rounded-xl bg-black/45 hover:bg-black/60 border border-white/15 transition cursor-pointer text-left space-y-1 group">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-butter">${s.tag}</span>
+                <span class="text-white/40">${s.dateStr}</span>
+              </div>
+              <p class="text-xs text-white/80 line-clamp-2 leading-relaxed font-sans font-medium">${s.textSnippet}</p>
+            </div>
+          `).join('');
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      loadSession(timestamp) {
+        try {
+          const sessions = JSON.parse(localStorage.getItem('untangle_sessions') || '[]');
+          const s = sessions.find(item => item.timestamp === timestamp);
+          if (s) {
+            const textarea = document.getElementById('thoughtInput');
+            if (textarea) textarea.value = s.fullText;
+            this.handleInput();
+            this.toggleSidebar();
+            this.startUntangle();
+            this.showToast("Loaded archived session.");
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      exportVaultJSON() {
+        try {
+          const sessions = localStorage.getItem('untangle_sessions') || '[]';
+          const blob = new Blob([sessions], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `untangle_vault_${Date.now()}.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+          this.showToast("Vault exported as JSON.");
+        } catch (e) {
+          this.showToast("Could not export vault.");
+        }
+      }
+
+      clearHistory() {
+        if (confirm("Clear all archived sessions from your browser?")) {
+          localStorage.removeItem('untangle_sessions');
+          this.renderHistoryList();
+          this.showToast("Vault cleared.");
+        }
+      }
+
+      saveAndReset() {
+        this.sound.playCelebrationChime();
+        this.particles.celebrate();
+        this.showToast("Saved to private vault!");
+        setTimeout(() => {
+          this.startFresh();
+        }, 1200);
+      }
+
+      startFresh() {
+        const textarea = document.getElementById('thoughtInput');
+        if (textarea) textarea.value = '';
+        this.handleInput();
+        this.currentCondition = null;
+        this.resetFocusTimer();
+        this.goToScreen(1);
+        this.showToast("Started fresh session.");
+      }
+
+      escapeHTML(str) {
+        return (str || '').replace(/[&<>'"]/g, tag => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          "'": '&#39;',
+          '"': '&quot;'
+        }[tag] || tag));
+      }
+
+      escapeQuotes(str) {
+        return (str || '').replace(/'/g, "\\'");
+      }
+    }
+
+    // --- INSTANTIATE APP & EXPOSE GLOBALLY ---
+    window.app = new UntangleApp();
+    window.addEventListener('DOMContentLoaded', () => {
+      window.app.init();
+    });
+
+  })();
+  </script>
+</body>
+</html>
